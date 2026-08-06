@@ -1,0 +1,27 @@
+{
+  "name": "kling-ai",
+  "version": "1.0.0",
+  "description": "Create and monitor Kling AI images and videos from Cursor.",
+  "author": {
+    "name": "KLING AI",
+    "url": "https://klingai.com"
+  },
+  "homepage": "https://klingai.com",
+  "license": "MIT",
+  "keywords": ["kling", "kling-ai", "image-generation", "video-generation", "mcp"],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kling AI",
+    "shortDescription": "Create and monitor Kling AI images and videos",
+    "longDescription": "Use the official Kling OAuth MCP server for image and video generation, and optionally monitor long-running tasks locally. Generation tools require explicit confirmation before consuming credits.",
+    "developerName": "KLING AI",
+    "category": "Creativity",
+    "websiteURL": "https://klingai.com",
+    "privacyPolicyURL": "https://klingai.com/app/docs/privacy-policy",
+    "termsOfServiceURL": "https://klingai.com/app/docs/user-policy",
+    "brandColor": "#000000",
+    "logo": "./assets/kling-logo.png",
+    "logoDark": "./assets/kling-logo.png"
+  }
+}

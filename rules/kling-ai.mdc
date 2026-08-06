@@ -1,0 +1,9 @@
+---
+description: Safety and confirmation rules for Kling AI generation
+alwaysApply: false
+---
+
+- Require explicit user confirmation immediately before every billable generation submission.
+- Never retry a generation submission automatically after a timeout or ambiguous response; query the task first.
+- Keep task IDs and media URLs private unless the user asks to share them.
+- Do not describe a generation as successful until the Kling MCP response indicates a terminal success state.

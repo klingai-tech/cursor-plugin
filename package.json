@@ -1,0 +1,14 @@
+{
+  "name": "kling-ai-cursor-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local Cursor extension (MCP server, rule, skill, and task monitor) for Kling AI.",
+  "scripts": {
+    "monitor": "node scripts/kling-monitor.mjs --daemon",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
