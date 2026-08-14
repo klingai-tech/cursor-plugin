@@ -8,7 +8,8 @@ credit-safety guidance, and an optional localhost task monitor.
 
 - `skills/kling-ai/SKILL.md`: generation confirmation and result-handling rules.
 - `rules/kling-ai.mdc`: optional project guidance for safe generation.
-- `.mcp.json`: remote OAuth MCP configuration for `https://klingai.com/mcp`.
+- `.cursor-plugin/plugin.json`: Cursor plugin metadata and installation manifest.
+- `mcp.json`: remote OAuth MCP configuration for `https://klingai.com/mcp`.
 - A local read-only monitor for generation status and outputs.
 
 ## When to use it

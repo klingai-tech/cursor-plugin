@@ -9,7 +9,7 @@
   "homepage": "https://klingai.com",
   "license": "MIT",
   "keywords": ["kling", "kling-ai", "image-generation", "video-generation", "mcp"],
-  "mcpServers": "./.mcp.json",
+  "mcpServers": "./mcp.json",
   "skills": "./skills/",
   "interface": {
     "displayName": "Kling AI",
