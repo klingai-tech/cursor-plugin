@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "kling-ai",
+  "version": "1.0.0",
+  "description": "Create and monitor Kling AI images and videos from Cursor.",
+  "author": {
+    "name": "KLING AI",
+    "url": "https://klingai.com"
+  },
+  "homepage": "https://klingai.com",
+  "repository": "https://github.com/klingai-tech/cursor-plugin",
+  "license": "MIT",
+  "keywords": ["kling", "kling-ai", "image-generation", "video-generation", "mcp"]
+}
