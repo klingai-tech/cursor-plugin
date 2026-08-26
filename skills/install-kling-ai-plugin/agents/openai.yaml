@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install Kling AI Plugin"
+  short_description: "Install and reconnect Kling AI in Cursor"
+  default_prompt: "Install the Kling AI Global plugin in Cursor without renaming its MCP server key or creating a second Kling connection."

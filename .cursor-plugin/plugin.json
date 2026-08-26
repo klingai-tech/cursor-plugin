@@ -1,27 +1,34 @@
 {
   "name": "kling-ai",
-  "version": "1.0.0",
-  "description": "Create and monitor Kling AI images and videos from Cursor.",
+  "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
+  "description": "Build your own AI creative workflow with Kling MCP",
+  "version": "1.0.2",
   "author": {
-    "name": "KLING AI",
-    "url": "https://klingai.com"
+    "name": "KLING AI"
   },
-  "homepage": "https://klingai.com",
+  "homepage": "https://kling.ai",
+  "repository": "https://github.com/klingai-tech/cursor-plugin",
   "license": "MIT",
-  "keywords": ["kling", "kling-ai", "image-generation", "video-generation", "mcp"],
-  "mcpServers": "./mcp.json",
-  "skills": "./skills/",
-  "interface": {
-    "displayName": "Kling AI",
-    "shortDescription": "Create and monitor Kling AI images and videos",
-    "longDescription": "Use the official Kling OAuth MCP server for image and video generation, and optionally monitor long-running tasks locally. Generation tools require explicit confirmation before consuming credits.",
-    "developerName": "KLING AI",
-    "category": "Creativity",
-    "websiteURL": "https://klingai.com",
-    "privacyPolicyURL": "https://klingai.com/app/docs/privacy-policy",
-    "termsOfServiceURL": "https://klingai.com/app/docs/user-policy",
-    "brandColor": "#000000",
-    "logo": "./assets/kling-logo.png",
-    "logoDark": "./assets/kling-logo.png"
-  }
+  "keywords": [
+    "kling",
+    "kling-ai",
+    "image-generation",
+    "video-generation",
+    "mcp",
+    "oauth"
+  ],
+  "logo": "assets/kling-logo.png",
+  "rules": "rules",
+  "skills": "skills",
+  "commands": "commands",
+  "mcpServers": "mcp.json",
+  "tags": [
+    "media",
+    "creative",
+    "ai-generation",
+    "video",
+    "image",
+    "mcp",
+    "oauth"
+  ]
 }

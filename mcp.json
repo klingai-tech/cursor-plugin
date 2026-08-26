@@ -1,9 +1,8 @@
 {
   "mcpServers": {
-    "kling-ai": {
+    "Plugin-Cursor-kling-ai": {
       "type": "http",
-      "url": "https://klingai.com/mcp",
-      "scopes": ["generation.create", "generation.read", "account.credit.read"]
+      "url": "https://kling.ai/mcp"
     }
   }
 }
