@@ -6,11 +6,15 @@ alwaysApply: false
 
 For Kling requests, use `$kling-ai` and route generation to
 `$kling-ai-generate-image` or `$kling-ai-generate-video`. Use only the
-configured `Plugin-Cursor-kling-ai` Global MCP at `https://kling.ai/mcp`.
-Confirm final billable settings immediately before generation, submit each
+configured `Plugin-Cursor-kling-ai` Global MCP at `https://kling.ai/mcp/plugin`.
+Discover live model capabilities across relevant tools, including `omni_ref_video`.
+Recommend V4 for compatible video requests. Confirm final billable settings
+immediately before generation unless already explicitly authorized, submit each
 confirmed intent at most once, and let a mounted generation MCP App refresh
 its own `generationId`. Do not call `query_tasks` for that submission from the
-model; each call creates another Cursor tool card. If no App is mounted, return
-the task number instead of model-loop polling. Call `query_tasks` exactly once
-only for an explicit standalone status request. Never switch regions or start
+model; each call creates another Cursor tool card. If no App is mounted, query
+at the provider-permitted interval until terminal,
+cancelled, or the turn cannot continue. Report completion only after terminal
+success with usable primary media. Call `query_tasks` exactly once for an
+explicit standalone status request. Never switch regions or start
 or depend on a local Kling MCP server.

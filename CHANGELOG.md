@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+- Synced shared Skills and references from Kling AI for Claude Code 1.3.0, adapted for Cursor.
+- Added V4 recommendations, omni-reference video routing, live capability discovery, and model parameter constraints.
+- Expanded Element, motion-library, upload, reference media, and billing workflows.
+- Updated the Global MCP endpoint to `https://kling.ai/mcp/plugin` and delegated OAuth registration to Cursor.
+- Aligned confirmation and result handling, including headless status polling when no MCP App renders.
+
 ## 1.0.2
 
 - Consolidated the repository as one Global `kling-ai` Cursor plugin.

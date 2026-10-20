@@ -25,7 +25,7 @@ the main confirmation, single-submission, and result-presentation contract.
 /kling-ai Check my Kling AI account and credits
 ```
 
-Every real generation still requires confirmation of the final billable
-settings, and each confirmed intent may be submitted at most once. When the
-generation MCP App mounts, it is the single self-refreshing status and result
+Confirm the final billable settings before generation unless the current user
+message already explicitly authorizes submission with those settings. Submit
+each confirmed intent at most once. When the generation MCP App mounts, it is the single self-refreshing status and result
 card; do not poll the same task with model-side `query_tasks` calls.

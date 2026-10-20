@@ -8,7 +8,7 @@ test("the Global Cursor plugin satisfies its package contract", () => {
 
   assert.deepEqual(result, {
     name: "kling-ai",
-    endpoint: "https://kling.ai/mcp",
-    version: "1.0.2"
+    endpoint: "https://kling.ai/mcp/plugin",
+    version: "1.3.0"
   });
 });

@@ -1,30 +1,33 @@
 ---
 name: kling-ai-generate-video
-description: Generate videos through the Kling AI MCP in Cursor. Use for text-to-video, image-to-video, motion control, product showcases, advertising clips, social videos, cinematic shots, and storyboard planning.
+description: Generate videos through the Kling AI MCP in Cursor. Use for text-to-video, image-to-video, omni reference, keyframes, audio-guided video, motion control, product showcases, advertising clips, social videos, cinematic shots, and storyboard planning.
 ---
 
 # Kling AI video generation
 
 Turn the request into one coherent motion plan and one user-confirmed remote video generation. Follow the Cursor OAuth, billing confirmation, single-submission, status, and result rules in the [core Kling Skill](../kling-ai/SKILL.md).
 
-Read [motion and shots](references/motion-and-shots.md) for camera direction, continuity, multi-beat timing, or reference media. Read [scene patterns](references/scene-patterns.md) for product, advertising, social, or cinematic work.
+Read [motion and shots](references/motion-and-shots.md) for camera direction, continuity, multi-beat timing, or reference media. Read [scene patterns](references/scene-patterns.md) for product, advertising, social, or cinematic work. For Elements, the motion library, or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
+
+V4 is generally available. Recommend V4 for video generation, checking the selected model's live parameters and compatibility with the request. Use the explicit recommendation "Recommended: V4" ("推荐使用 V4"); avoid "the latest model" wording. Respect user-specified models and the live routing rules.
 
 ## Workflow
 
-1. Use `text_to_video` when text defines the opening frame. Use `image_to_video` when an image controls the first frame, tail frame, identity, product, or visual reference. Use `motion_control` for motion transfer.
+1. Follow [video model routing](references/model-routing.md) and the core [capability discovery](../kling-ai/references/capability-discovery.md) before choosing a tool/model pair. Discover `text_to_video`, `image_to_video`, and `omni_ref_video` as applicable; include omni reference in model discovery even without attachments. Keep `motion_control` for compatible motion-transfer requests.
 2. Ask only for missing information that materially changes the result: destination and aspect ratio, duration, required references, protected facts, narration or copy, or shot structure.
-3. Create or reuse the UUIDv7 `taskTraceId` for this objective, call `who_am_i`, and select a compatible model, duration, resolution, and live arguments.
+3. Create or reuse the UUIDv7 `taskTraceId` for this objective. Use this preparation's `who_am_i` response to select a compatible tool/model pair, then apply [model parameters](../kling-ai/references/model-parameters.md) for output specifications, reference caps, Element types, and sound dependencies. Query unexamined candidates or refresh stale data when needed.
 4. Upload local media first. Distinguish first frame, tail frame, identity or product reference, style reference, and motion source. Never silently degrade modes after an upload failure.
 5. Build a motion-first prompt covering opening composition, subject action, camera movement, environmental motion, timing, continuity, protected facts, light, materials, and necessary exclusions.
-6. Show the final mode, model, prompt summary, duration, resolution, aspect ratio, output count, shot structure, and reference roles. Wait for explicit user confirmation.
-7. Call the selected video or motion tool exactly once and preserve the task number. If its MCP App mounts, let that one App self-refresh and do not call `query_tasks` from the model. If no App mounts, return the task number without a polling loop; never resubmit.
-8. When Cursor renders the MCP App, do not add Markdown media, duplicate links, or another status card. When no App is rendered, provide one primary video link.
+6. Show the final mode, model, prompt summary, duration, resolution, aspect ratio, output count, shot structure, and reference roles. Obtain explicit approval under the core Skill's billing rule; honor an existing explicit authorization for the final settings.
+7. Call the selected video or motion tool exactly once and preserve the task number. If its MCP App mounts, let that one App self-refresh and do not call `query_tasks` from the model. If no App mounts, follow the core Skill's headless polling fallback; never resubmit.
+8. When Cursor renders the MCP App, do not add Markdown media or duplicate links. When no App is rendered, provide one primary video link.
 
 ## Mode rules
 
-- Text-to-video does not use Elements.
-- Image-to-video distinguishes first frame, tail frame, identity or product reference, and style reference. Pass only input roles supported by the live schema.
-- Motion control requires a subject image. Choose exactly one motion source - a motion-library ID or a source video - as directed by the live tool.
+- Element use requires explicit support for its resource type and binding argument in the selected model; do not infer it from the entry point name.
+- Image-to-video and omni reference distinguish first frame, tail frame, keyframes, identity or product reference, style, video, and audio. Pass only roles declared by the selected model and satisfy all conditional combination limits. Pure-text omni reference requires a model that permits no media input.
+- Audio inputs, generated sound, and original-sound retention are separate capabilities. Respect declared mutual exclusion, including `enable_audio` versus `keepOriginalSound`, and do not add unrequested sound or multi-shot output because a model enables it by default.
+- Motion control requires a subject image. Choose exactly one motion source - a motion-library ID or a source video - as directed by the live tool. Use the core asset workflow to resolve library IDs and validate motion direction and duration.
 - A multi-shot plan is one confirmed video task. Do not submit one generation per shot unless the user explicitly approves separate tasks.
 - A status request uses only `query_tasks`; it does not create a video.
 

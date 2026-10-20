@@ -1,64 +1,66 @@
 ---
 name: kling-ai
-description: Create, query, and manage Kling AI image and video tasks through the OAuth-protected MCP in Cursor. Use for text-to-image, image-to-image, text-to-video, image-to-video, motion control, uploads, Elements, credit checks, task status, and account switching.
+description: Coordinate Kling AI creation requests and manage reusable subjects (Elements), the motion library, uploads, credits, task status, and account switching through the remote MCP in Cursor. Route image and video generation to their dedicated Skills.
+license: MIT
 ---
 
 # Kling AI for Cursor
 
-Use only the Global MCP configured by this Cursor plugin: `https://kling.ai/mcp`. Do not switch regions, register a second Kling MCP, or start or depend on a local MCP server.
+Use only the remote Global MCP configured by this plugin: `https://kling.ai/mcp/plugin`. `mcp.json` is the connection source of truth. Do not switch regions, register a second Kling MCP, or start or depend on a local MCP server.
 
 ## Request routing
 
-- Route text-to-image, image-to-image, posters, covers, product stills, portraits, and image variants to `kling-ai-generate-image`.
-- Route text-to-video, image-to-video, motion control, animation, camera movement, storyboards, and video concepts to `kling-ai-generate-video`.
-- Keep OAuth, sign-out or account switching, uploads, the motion library, Elements, credit checks, cross-media requests, and task-status requests in this Skill.
-- Follow up on an existing task with `query_tasks`; do not create a replacement generation.
+- For image creation or editing, follow [kling-ai-generate-image](../kling-ai-generate-image/SKILL.md): text-to-image, image-to-image, posters, product photos, portraits, covers, and variants.
+- For video generation, model selection, or motion transfer, follow [kling-ai-generate-video](../kling-ai-generate-video/SKILL.md): text-to-video, image-to-video, omni reference, keyframes, motion control, animation, and single-shot or multi-shot video. Discover relevant existing and new entry points before selecting a model, including for pure-text requests.
+- Keep uploads, Elements, motion-library browsing, account operations, credit checks, and task status in this Skill. It also supplies the shared connection, billing, submission, and result rules for both generation Skills.
+- Motion library: browse with `motion_library_list`. Resolve the selected motion, then follow the video Skill for `motion_control` with a subject image and exactly one motion source.
+- Subject library / Elements: use `element_list`, `element_get`, `element_create`, `element_update`, or `element_delete` for the requested operation. Resolve real IDs before reuse.
+- Account and credits: use `query_membership_and_credits`; model capabilities come from `who_am_i`.
+- Existing tasks: use `query_tasks` with a known `generationId`. A status or library request never creates a generation.
+- Sign-out or account switching: act only on an explicit user request, stay on the Global endpoint, and complete native Cursor OAuth before further Kling calls.
 
-An attachment does not determine its role. When the user has not specified one, ask only which materially relevant role it serves: first frame, tail frame, identity or product reference, editable source, motion source, or style reference.
+Call only tools present in the live tool list. An attachment alone does not determine its role; clarify only when first frame, tail frame, identity/product reference, editable source, motion source, or style reference would materially change the request.
 
-## Cursor connection boundary
+Read [asset workflows](references/asset-workflows.md) for Elements, the motion library, or uploads. Before generation, follow [capability discovery](references/capability-discovery.md), then [model parameters](references/model-parameters.md), [tool workflows](references/tool-workflows.md), and the [MCP contract](references/mcp-contract.md). Use [prompt examples](references/prompt-examples.md) for creative direction and [troubleshooting](references/troubleshooting.md) after a failure.
 
-- Use OAuth managed by the Cursor MCP connection. Never request an API key, token, cookie, authorization header, or credential file. Never log private account fields or signed URLs.
-- OAuth dynamic client registration uses `client_name: "Plugin-Cursor"`. This is OAuth metadata, not a tool argument, URL parameter, or secret. If the host cannot inject it, stop before authorization and report the limitation.
-- `mcp.json` is the only MCP configuration source of truth and must remain pointed at `https://kling.ai/mcp`. Do not create a second Kling configuration or regional-switching flow.
-- Create one RFC 4122 UUIDv7 `taskTraceId` for each unrelated new objective. Reuse it across discovery, upload, generation, and querying for the same objective. Present `generationId` to the user as the task number; do not expose `taskTraceId` unless troubleshooting requires it.
+## Connection and task identity
+
+- Use OAuth through Cursor's native MCP connection flow (Customize → Plugins, then Connect on `Plugin-Cursor-kling-ai`). Never request an API key, token, cookie, authorization header, or credential file. Never log private account fields, upload tickets, or signed URLs.
+- Let Cursor manage OAuth discovery, client registration, and credentials through its native MCP flow. This plugin does not configure a custom OAuth client name; do not invent registration overrides or block authorization because the host cannot set one. If the real OAuth flow fails, report the sanitized error and follow [troubleshooting](references/troubleshooting.md).
+- Create one UUIDv7 `taskTraceId` for each unrelated new objective. Reuse it across discovery, upload, generation, and querying for that objective wherever the live tool accepts it.
+- Preserve exact returned IDs. Present `generationId` as the task number; expose `taskTraceId` only when troubleshooting requires it.
 
 ## Billing and single submission
 
-- Image, video, and motion generation consume Kling credits. Call `who_am_i` before submission and use its live model and argument definitions. If the remote `mcpVersion` is newer than the current tool snapshot, ask the user to reload Cursor and continue in a new conversation.
-- Before generation, show the final workflow, model, prompt summary, resolution or duration, aspect ratio, output count, and reference roles. Obtain explicit confirmation immediately before submission. A read-only query, account check, or upload is not generation approval.
-- Submit at most once per confirmed intent. Never retry automatically or silently change models after a failure, timeout, ambiguous response, or rendering problem.
-- After receiving a `generationId`, determine who owns refresh. When Cursor mounts the generation MCP App, the App refreshes that submission internally; do not call `query_tasks` for it from the model because each call creates another tool card. If no App mounts, return the current state and task number instead of entering a model-driven polling loop. Call `query_tasks` exactly once only for a later explicit standalone status request. If the submission response is lost, first use known identifiers or a provider-supported task listing to determine whether a task exists; if absence cannot be proven, stop and report that creation state is unknown.
+- Image, video, and motion generation consume credits. Call `who_am_i` during preparation and select only models returned in the current account's `availableModels` for the chosen tool, with their declared arguments, inputs, and combination limits. Follow capability discovery for cross-tool selection and refresh stale definitions before proceeding. Do not infer model access from a tool's existence, membership tier, or static examples.
+- Show the final workflow, model, prompt summary, duration/resolution, aspect ratio, output count, and reference roles. Obtain explicit confirmation immediately before submission unless the current user message already authorizes immediate submission with those final settings. An upload, library operation, or credit check is not generation approval.
+- Include any billing disclosure required by the live model/tool in those final settings. For omni reference that declares per-second billing with input video duration included, explain both facts before submission; output duration alone is not the total billed duration. Do not invent a rate or total credit estimate.
+- Submit at most once per approved intent. Never automatically retry or silently change models after a failure, timeout, ambiguous response, or rendering problem.
+- Do not save an Element automatically during ordinary generation. Element writes and deletion must follow the user's explicit request as described in [asset workflows](references/asset-workflows.md).
 
-Read [tool workflows](references/tool-workflows.md) and the [MCP contract](references/mcp-contract.md) before generation. Read [troubleshooting](references/troubleshooting.md) only after an authorization, schema, upload, or provider failure.
+## Generation and results
 
-## Workflow
-
-1. Classify the request as generation, motion control, Element management, account mutation, or read-only query.
-2. Read the current remote tool definitions. Before generation or motion control, call `who_am_i` and use only the canonical model name, arguments, defaults, enums, and media inputs declared for the selected model.
-3. Fill only creative details that materially affect the result. Do not invent models, fields, or values from memory.
-4. When local media is required, upload it first and reuse the returned provider reference exactly as the live schema requires. Upload completion does not replace the billing confirmation.
-5. After explicit confirmation, call the selected generation tool exactly once and preserve both `generationId` and `taskTraceId`.
-6. When the generation response mounts an MCP App, stop model-side status polling. Keep that one App as the refresh owner; it calls `query_tasks` internally and updates in place. Do not wait and recheck the same task with another model tool call.
-7. If no App mounts, report the current state and task number without a polling loop. For a later direct request about an existing task, call `query_tasks` exactly once and report that snapshot; do not start a new generation or repeat the query in the same turn.
-8. Treat the mounted App as the only media preview and status surface. Do not add Markdown image/video syntax, a separate media attachment, a thumbnail, or a duplicate download link outside the App. Only when no App is rendered may you return the same call's text fallback and one primary result link.
-9. Call `element_delete`, `logout`, or account switching only when the user explicitly requests the state change. Account switching stays on the same Global endpoint. Call no other Kling tool until authorization completes.
+1. Resolve reference roles, Elements, and motion sources; prepare local media before submission. Use the returned provider references exactly as the selected live schema requires.
+2. Confirm the final billable settings, then call the chosen generation tool once. A multi-shot plan remains one task unless the user approves separate tasks.
+3. Once `generationId` is known, use only `query_tasks` for follow-up. If the submission response is lost before an ID is known, stop and report that creation/billing state is unknown. The current MCP cannot list account history or recover a task by `taskTraceId`.
+4. If Cursor renders the generation MCP App, let that App own task refresh. Do not poll the same task from the model or add duplicate media, thumbnails, or download links.
+5. If no App renders, query at the provider-permitted interval until terminal, cancelled, or the turn cannot continue. Report the actual state and task number, with the tool's text fallback and at most one primary result link. Do not add Markdown image/video embeds or claim an unmounted App was displayed.
+6. For an explicit status request, query once and report the current state; do not start a long polling loop.
+7. Claim completion only after terminal success with usable primary media. If work-level status exists it must also be successful; a video cover alone is not a completed video.
 
 ## Quality defaults
 
-Apply these defaults only when the user did not specify another choice and the live schema supports them:
+Apply only when the user has not specified another choice and the live model supports it:
 
-- Model: prefer a full-quality model compatible with the requested mode and references. Prefer Turbo, fast, or low-cost models only when the user explicitly prioritizes drafts, speed, or credit savings.
-- Image resolution: prefer `2k` for normal delivery, `4k` for commercial work, advertising, fine materials, or crop-heavy post-production, and `1k` only for drafts or speed. Never lower a higher live default.
-- Video resolution: prefer `1080p` for normal delivery and `4k` for supported commercial, large-screen, or post-production work. Use `720p` for drafts, speed, cost, or model limitations.
-- Output count: generate one result unless the user requests more.
-- Duration: use about 5 seconds for one action or shot, about 10 seconds for dialogue, a complete product action, or two connected beats, and longer only when supported and narratively necessary.
-- Aspect ratio: use `9:16` for vertical shorts, `1:1` for square feeds, and `16:9` for landscape ads or web. For image-to-video, preserve the first frame unless the live tool requires an explicit ratio.
+- Prefer full-quality models. Use Turbo, fast, or low-cost modes when the user prioritizes drafts, speed, or credit savings.
+- Images: prefer `2k` for normal delivery and `4k` for commercial or crop-heavy work; use `1k` for drafts or speed. Never lower a higher live default.
+- Videos: prefer `1080p` for normal delivery and supported `4k` for commercial or post-production work; use `720p` for drafts, cost, speed, or model limitations.
+- Generate one result unless more are requested. Use about 5 seconds for one action, about 10 seconds for two connected beats, and longer only when supported and needed. Motion-control duration comes from the selected source and live constraints.
+- Infer `9:16`, `1:1`, or `16:9` from the destination; preserve first-frame composition for image-to-video unless the tool requires an explicit ratio.
 
 ## Failure behavior
 
-- Unauthorized: use Cursor's native MCP Connect flow for `kling-ai`, then continue only after authorization succeeds.
-- Unsupported argument: refresh the live tool definitions and change only the rejected field. Show the revised settings and obtain confirmation again before any new generation.
-- Insufficient credits or provider failure: report the provider message and task number, then stop. Do not retry automatically.
-- Expired result URL: query the original task number for a fresh URL; do not create a new task.
-- Opaque error, unexpected empty result, or billing anomaly: submit one feedback report as directed by the tool description. Feedback is not a retry, refund, or fix.
+- Unauthorized: use native Cursor OAuth and continue only after authorization succeeds.
+- Unsupported argument: refresh the live definitions, revise only unsupported settings, and obtain confirmation before a new generation.
+- Insufficient credits or provider failure: report the provider message and preserve the task number; do not resubmit.
+- Expired media URL: query the original `generationId` for current outputs before reuse. A failed refresh is not permission to create a replacement task.

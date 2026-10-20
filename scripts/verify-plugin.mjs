@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SERVER_KEY = "Plugin-Cursor-kling-ai";
-const ENDPOINT = "https://kling.ai/mcp";
+const ENDPOINT = "https://kling.ai/mcp/plugin";
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));

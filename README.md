@@ -5,10 +5,13 @@ the OAuth-protected Global Kling MCP. This repository contains one Cursor
 plugin for the international service; it does not include a regional variant or
 a local MCP server.
 
+Version: **1.3.0**
+
 ## Capabilities
 
 - Text-to-image, image-to-image, posters, product visuals, portraits, and covers
-- Text-to-video, image-to-video, motion control, product clips, and shot planning
+- V4 video recommendations, omni reference, keyframes, audio-guided video, and motion control
+- Live account-scoped model discovery, reference limits, and billing disclosures
 - Media upload, Element management, motion library, credit checks, and task status
 - Confirmation immediately before credit-consuming generation
 - At most one submission per confirmed intent
@@ -17,7 +20,7 @@ a local MCP server.
 ## MCP endpoint
 
 The plugin registers exactly one HTTP MCP server with the key
-`Plugin-Cursor-kling-ai` and endpoint `https://kling.ai/mcp`. Cursor manages its
+`Plugin-Cursor-kling-ai` and endpoint `https://kling.ai/mcp/plugin`. Cursor manages its
 OAuth connection. Do not add a second Kling MCP configuration or paste an API
 key, token, cookie, or authorization header into chat.
 
@@ -34,8 +37,9 @@ cp -R .cursor-plugin assets commands rules skills mcp.json README.md \
 
 Restart Cursor or run `Developer: Reload Window`, confirm Kling AI is loaded
 under **Customize → Plugins**, and click **Connect** on its MCP server to
-complete OAuth. After updating a Skill or MCP configuration, reload Cursor and
-start a new conversation so it receives the latest tool snapshot.
+complete OAuth. When upgrading from 1.0.2, reconnect the MCP server to authorize
+the updated `/mcp/plugin` endpoint. After updating a Skill or MCP configuration,
+reload Cursor and start a new conversation so it receives the latest tool snapshot.
 
 ## Components
 
@@ -56,13 +60,15 @@ start a new conversation so it receives the latest tool snapshot.
    models, arguments, enums, and inputs.
 2. Upload local media with the remote upload tool and reuse one UUIDv7
    `taskTraceId` for the same objective.
-3. Show final billable settings and wait for explicit confirmation.
+3. Show final billable settings, including live-required billing disclosures, and
+   obtain explicit confirmation unless those settings are already authorized.
 4. Call a generation tool at most once per confirmed intent; never retry an
    ambiguous submission automatically.
 5. When Cursor mounts the generation MCP App, let that App refresh internally
    instead of creating duplicate model-side `query_tasks` cards.
-6. If no App mounts, return the task number without model-loop polling. A later
-   explicit status request may query the task once.
+6. If no App mounts, query at the provider-permitted interval until terminal,
+   cancelled, or the turn cannot continue. Report completion only after terminal
+   success with usable primary media. An explicit status request queries once.
 
 ## Examples
 

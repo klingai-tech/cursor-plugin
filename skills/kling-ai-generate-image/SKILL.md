@@ -7,24 +7,24 @@ description: Generate or edit images through the Kling AI MCP in Cursor. Use for
 
 Turn the creative request into one precise, user-confirmed remote image generation. Follow the Cursor OAuth, billing confirmation, single-submission, status, and result rules in the [core Kling Skill](../kling-ai/SKILL.md).
 
-Read [prompt construction](references/prompt-construction.md) for reference images, exact copy, branded assets, or controlled variants. Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work.
+Read [prompt construction](references/prompt-construction.md) for reference images, exact copy, branded assets, or controlled variants. Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work. For Element reuse or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
 
 ## Workflow
 
 1. Use `text_to_image` for a new image. Use `image_to_image` when source media controls identity, product structure, composition, editable content, or style. An attachment alone does not determine the mode.
 2. Ask only for missing information that materially changes the result: subject, destination and aspect ratio, required copy, reference roles, protected facts, or output count.
-3. Create or reuse the UUIDv7 `taskTraceId` for this objective, call `who_am_i`, and select an explicitly compatible model and live arguments.
+3. Create or reuse the UUIDv7 `taskTraceId` for this objective, follow [capability discovery](../kling-ai/references/capability-discovery.md), and select a compatible tool/model pair from this account's `who_am_i` response. Apply [model parameters](../kling-ai/references/model-parameters.md) before constructing arguments or reference bindings.
 4. Upload local images first and use only the live input names and returned URLs. Never silently degrade to text-to-image after an upload failure.
 5. Build one prompt covering subject, action, environment, composition, lighting, color, materials, camera language, protected facts, and necessary exclusions.
-6. Show the final mode, model, prompt summary, resolution, aspect ratio, output count, and reference roles. Wait for explicit user confirmation.
-7. Call the image generation tool exactly once and preserve the task number. If its MCP App mounts, let that one App self-refresh and do not call `query_tasks` from the model. If no App mounts, return the task number without a polling loop; never resubmit.
-8. When Cursor renders the MCP App, do not add Markdown media, duplicate links, or another status card. When no App is rendered, provide one primary image link.
+6. Show the final mode, model, prompt summary, resolution, aspect ratio, output count, and reference roles. Obtain explicit approval under the core Skill's billing rule; honor an existing explicit authorization for the final settings.
+7. Call the image generation tool exactly once and preserve the task number. If its MCP App mounts, let that one App self-refresh and do not call `query_tasks` from the model. If no App mounts, follow the core Skill's headless polling fallback; never resubmit.
+8. When Cursor renders the MCP App, do not add Markdown media or duplicate links. When no App is rendered, provide one primary image link.
 
 ## Mode rules
 
-- Text-to-image does not use Elements.
+- Element support follows the selected model's declared resource types and binding argument, not the entry point name.
 - Image-to-image may use one or more images with explicit roles. State the purpose of every image when multiple references are present.
-- Before using an Element subject, call `element_get` and choose only an image-to-image model whose live schema explicitly supports `elements`.
+- Before using an Element subject, follow the core asset workflow, call `element_get`, and choose a model that explicitly supports the resource type and binding argument. Check individual and combined reference caps, and bind the exact ID with the model's declared prompt and structured syntax.
 - For a variant, lock every fact that the user did not ask to change. Change one major dimension per confirmed generation.
 - A status request uses only `query_tasks`; it does not create an image.
 

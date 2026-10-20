@@ -12,16 +12,17 @@ Choose one primary pattern that fits the destination. User-provided facts and br
 
 ## Advertising and social
 
-- Static ad: one hook, one focal subject, one proof or detail, and one intentional copy-safe area.
-- Feed post: bold silhouette and strong color separation that remain legible at thumbnail size.
-- Story or vertical cover: keep key faces and products away from top and bottom interface overlays.
-- Thumbnail: one readable action or expression, controlled background complexity, and high subject-background contrast.
+- Static ad: one hook, one subject, one piece of visual evidence, and a clear copy-safe area.
+- UGC still: a credible phone-camera angle, natural environment, and realistic handling without fabricated testimonials.
+- Carousel: establish consistent color, lens, light, margins, and product scale, then give each frame one distinct communication task.
+- Campaign key visual: a memorable silhouette, a deliberate color mechanism, one dominant metaphor, and a simplified background.
 
-## Portraits, posters, and covers
+## People, covers, and posters
 
-- Editorial portrait: identity fidelity, deliberate pose, wardrobe, background separation, and lighting direction.
-- Character concept: stable anatomy, clear costume layers, readable silhouette, and selected detail views only when requested.
-- Poster or cover: establish a focal hierarchy and reserve intentional space for typography; do not invent titles or credits.
-- Environment key art: define scale with foreground, middle ground, and background, plus one visual path into the scene.
+- Portrait: define framing, expression, gaze, wardrobe, background, key/fill/rim light, and natural facial structure.
+- Identity reference: lock bone structure, skin tone, hairline, apparent age, and distinguishing traits.
+- Vertical cover: keep the key action in the upper focal area and reserve lower interface-safe space.
+- Landscape thumbnail: one dominant face or object, strong subject separation, little clutter, and readability at small size.
+- Poster: one visual proposition, deliberate hierarchy, clean copy space, and controlled color.
 
-When the user asks for ideas rather than execution, offer three materially different directions and wait for a choice. Discussing multiple directions does not authorize multiple generation tasks.
+When the user asks for creative directions, offer three materially different options - product fact, human context, and visual metaphor - then generate only after the user selects one. Do not submit three billable tasks automatically.
