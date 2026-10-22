@@ -2,13 +2,13 @@
 
 ## MCP tools are missing
 
-Use Cursor's MCP settings to verify that the plugin's `Plugin-Cursor-kling-ai` server is enabled and points to `https://kling.ai/mcp/plugin`. After changing plugin files, run `Developer: Reload Window`; if the tool definitions remain stale, start a new Cursor conversation and check its MCP diagnostics. Do not add a duplicate server or use an API key as a workaround.
+Use Cursor's MCP settings to verify that the plugin's `kling-ai` server is enabled and points to `https://kling.ai/mcp/plugin`. After changing plugin files, run `Developer: Reload Window`; if the tool definitions remain stale, start a new Cursor conversation and check its MCP diagnostics. Do not add a duplicate server or use an API key as a workaround.
 
 ## Endpoint migration and authorization
 
 This release uses the Global endpoint `https://kling.ai/mcp/plugin`. The previous Cursor plugin endpoint was `https://kling.ai/mcp`. Before updating an existing connection, retain any outstanding task numbers and finish their status checks through the original connection. Disconnect the old host-managed OAuth session, update the plugin, then use Cursor's MCP Connect flow to authorize the Global account. Never transfer credentials between hosts or assume that regional task history and credits are shared.
 
-For an authorization failure, use Cursor's MCP Connect flow for `Plugin-Cursor-kling-ai`, and complete native OAuth. If sign-out or account switching was explicitly requested, call the live `logout` tool as documented and reauthorize before other Kling calls. Do not paste tokens, construct OAuth URLs manually, or add an `oauth_resource` override. `Developer: Reload Window` reloads plugin files; it does not refresh OAuth credentials.
+For an authorization failure, use Cursor's MCP Connect flow for `kling-ai`, and complete native OAuth. If sign-out or account switching was explicitly requested, call the live `logout` tool as documented and reauthorize before other Kling calls. Do not paste tokens, construct OAuth URLs manually, or add an `oauth_resource` override. `Developer: Reload Window` reloads plugin files; it does not refresh OAuth credentials.
 
 OAuth discovery and client registration belong to the host. Do not require a custom client name or try to add one to generation arguments, headers, or the MCP URL. If the server rejects the host's registration, preserve the sanitized error for the service maintainer instead of guessing metadata or requesting credentials in chat.
 

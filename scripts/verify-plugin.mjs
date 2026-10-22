@@ -5,7 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const SERVER_KEY = "Plugin-Cursor-kling-ai";
+const SERVER_KEY = "kling-ai";
 const ENDPOINT = "https://kling.ai/mcp/plugin";
 
 function readJson(path) {
@@ -45,7 +45,6 @@ export function verifyPlugin() {
     "assets/kling-logo.png",
     "rules/kling-ai.mdc",
     "commands/kling-ai.md",
-    "skills/install-kling-ai-plugin/SKILL.md",
     "skills/kling-ai/SKILL.md",
     "skills/kling-ai-generate-image/SKILL.md",
     "skills/kling-ai-generate-video/SKILL.md"

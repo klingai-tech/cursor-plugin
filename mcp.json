@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "Plugin-Cursor-kling-ai": {
+    "kling-ai": {
       "type": "http",
       "url": "https://kling.ai/mcp/plugin"
     }

@@ -11,7 +11,7 @@ Use only the remote Global MCP configured by this plugin: `https://kling.ai/mcp/
 ## Request routing
 
 - For image creation or editing, follow [kling-ai-generate-image](../kling-ai-generate-image/SKILL.md): text-to-image, image-to-image, posters, product photos, portraits, covers, and variants.
-- For video generation, model selection, or motion transfer, follow [kling-ai-generate-video](../kling-ai-generate-video/SKILL.md): text-to-video, image-to-video, omni reference, keyframes, motion control, animation, and single-shot or multi-shot video. Discover relevant existing and new entry points before selecting a model, including for pure-text requests.
+- For video generation, model selection, or motion transfer, follow [kling-ai-generate-video](../kling-ai-generate-video/SKILL.md): text-to-video, image-to-video, omni reference, keyframes, motion control, animation, and single-shot or multi-shot video. Default to `omni_ref_video` (全能参考) and a compatible live Kling 4.0 (V4) model, including for pure-text requests; use dedicated entry points when explicitly requested or required by the capability.
 - Keep uploads, Elements, motion-library browsing, account operations, credit checks, and task status in this Skill. It also supplies the shared connection, billing, submission, and result rules for both generation Skills.
 - Motion library: browse with `motion_library_list`. Resolve the selected motion, then follow the video Skill for `motion_control` with a subject image and exactly one motion source.
 - Subject library / Elements: use `element_list`, `element_get`, `element_create`, `element_update`, or `element_delete` for the requested operation. Resolve real IDs before reuse.
@@ -25,7 +25,7 @@ Read [asset workflows](references/asset-workflows.md) for Elements, the motion l
 
 ## Connection and task identity
 
-- Use OAuth through Cursor's native MCP connection flow (Customize → Plugins, then Connect on `Plugin-Cursor-kling-ai`). Never request an API key, token, cookie, authorization header, or credential file. Never log private account fields, upload tickets, or signed URLs.
+- Use OAuth through Cursor's native MCP connection flow (Customize → Plugins, then Connect on `kling-ai`). Never request an API key, token, cookie, authorization header, or credential file. Never log private account fields, upload tickets, or signed URLs.
 - Let Cursor manage OAuth discovery, client registration, and credentials through its native MCP flow. This plugin does not configure a custom OAuth client name; do not invent registration overrides or block authorization because the host cannot set one. If the real OAuth flow fails, report the sanitized error and follow [troubleshooting](references/troubleshooting.md).
 - Create one UUIDv7 `taskTraceId` for each unrelated new objective. Reuse it across discovery, upload, generation, and querying for that objective wherever the live tool accepts it.
 - Preserve exact returned IDs. Present `generationId` as the task number; expose `taskTraceId` only when troubleshooting requires it.

@@ -5,7 +5,7 @@ the OAuth-protected Global Kling MCP. This repository contains one Cursor
 plugin for the international service; it does not include a regional variant or
 a local MCP server.
 
-Version: **1.3.0**
+Version: **1.4.0**
 
 ## Capabilities
 
@@ -20,7 +20,7 @@ Version: **1.3.0**
 ## MCP endpoint
 
 The plugin registers exactly one HTTP MCP server with the key
-`Plugin-Cursor-kling-ai` and endpoint `https://kling.ai/mcp/plugin`. Cursor manages its
+`kling-ai` and endpoint `https://kling.ai/mcp/plugin`. Cursor manages its
 OAuth connection. Do not add a second Kling MCP configuration or paste an API
 key, token, cookie, or authorization header into chat.
 
@@ -49,7 +49,6 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
 | MCP | `mcp.json` | Global remote OAuth MCP |
 | Rule | `rules/kling-ai.mdc` | Routing, safety, and single-submission constraints |
 | Command | `commands/kling-ai.md` | `/kling-ai` natural-language entrypoint |
-| Install Skill | `skills/install-kling-ai-plugin/` | Installation, endpoint validation, and reconnection |
 | Core Skill | `skills/kling-ai/` | OAuth, account, media, Elements, status, and shared contract |
 | Image Skill | `skills/kling-ai-generate-image/` | Image workflows, prompting, and quality gates |
 | Video Skill | `skills/kling-ai-generate-video/` | Video, motion control, duration, and shot planning |
