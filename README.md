@@ -26,6 +26,12 @@ key, token, cookie, or authorization header into chat.
 
 ## Local installation
 
+The [Cursor Directory listing](https://cursor.directory/plugins/kling-ai) offers
+component-level actions: **Add to Cursor** under Rules adds a rule, and the same
+button under MCP Servers adds only an MCP server. These actions do not install
+the complete plugin or its Skills, so they do not create an entry under
+**Customize → Plugins**. Use the local installation below for the complete bundle.
+
 From the repository root, copy the plugin components into Cursor's local plugin
 directory:
 
