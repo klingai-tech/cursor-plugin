@@ -19,7 +19,7 @@ Version: **1.4.0**
 ## MCP endpoint
 
 The plugin registers exactly one HTTP MCP server with the key
-`kling-ai` and endpoint `https://klingai.com/mcp`. Cursor manages its
+`kling-ai` and endpoint `https://klingai.com/mcp/plugin`. Cursor manages its
 OAuth connection. Do not add a second Kling MCP configuration or paste an API
 key, token, cookie, or authorization header into chat.
 

@@ -6,7 +6,7 @@ alwaysApply: false
 
 For Kling requests, use `$kling-ai` and route generation to
 `$kling-ai-generate-image` or `$kling-ai-generate-video`. Use only the
-configured `kling-ai` China MCP at `https://klingai.com/mcp`.
+configured `kling-ai` China MCP at `https://klingai.com/mcp/plugin`.
 Discover live model capabilities across relevant tools, including `omni_ref_video`.
 Recommend V4 for compatible video requests. Confirm final billable settings
 immediately before generation unless already explicitly authorized, submit each

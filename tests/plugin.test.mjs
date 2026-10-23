@@ -8,7 +8,7 @@ test("the China Cursor plugin satisfies its package contract", () => {
 
   assert.deepEqual(result, {
     name: "kling-ai",
-    endpoint: "https://klingai.com/mcp",
+    endpoint: "https://klingai.com/mcp/plugin",
     version: "1.4.0"
   });
 });

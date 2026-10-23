@@ -6,7 +6,7 @@ license: MIT
 
 # Kling AI for Cursor
 
-Use only the remote China MCP configured by this plugin: `https://klingai.com/mcp`. `mcp.json` is the connection source of truth. Do not switch regions, register a second Kling MCP, or start or depend on a local MCP server.
+Use only the remote China MCP configured by this plugin: `https://klingai.com/mcp/plugin`. `mcp.json` is the connection source of truth. Do not switch regions, register a second Kling MCP, or start or depend on a local MCP server.
 
 ## Request routing
 
