@@ -1,9 +1,8 @@
 # Kling AI for Cursor
 
 Kling AI for Cursor creates and queries image, video, and motion tasks through
-the OAuth-protected Global Kling MCP. This repository contains one Cursor
-plugin for the international service; it does not include a regional variant or
-a local MCP server.
+the OAuth-protected China Kling MCP. This branch contains one Cursor
+plugin for the China service; it does not include a local MCP server.
 
 Version: **1.4.0**
 
@@ -20,7 +19,7 @@ Version: **1.4.0**
 ## MCP endpoint
 
 The plugin registers exactly one HTTP MCP server with the key
-`kling-ai` and endpoint `https://kling.ai/mcp/plugin`. Cursor manages its
+`kling-ai` and endpoint `https://klingai.com/mcp`. Cursor manages its
 OAuth connection. Do not add a second Kling MCP configuration or paste an API
 key, token, cookie, or authorization header into chat.
 
@@ -43,8 +42,8 @@ cp -R .cursor-plugin assets commands rules skills mcp.json README.md \
 
 Restart Cursor or run `Developer: Reload Window`, confirm Kling AI is loaded
 under **Customize → Plugins**, and click **Connect** on its MCP server to
-complete OAuth. When upgrading from 1.0.2, reconnect the MCP server to authorize
-the updated `/mcp/plugin` endpoint. After updating a Skill or MCP configuration,
+complete OAuth. When switching from the Global plugin, reconnect the MCP server
+to authorize the China endpoint. After updating a Skill or MCP configuration,
 reload Cursor and start a new conversation so it receives the latest tool snapshot.
 
 ## Components
@@ -52,7 +51,7 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
 | Component | Path | Purpose |
 | --- | --- | --- |
 | Manifest | `.cursor-plugin/plugin.json` | Plugin identity and native component entrypoints |
-| MCP | `mcp.json` | Global remote OAuth MCP |
+| MCP | `mcp.json` | China remote OAuth MCP |
 | Rule | `rules/kling-ai.mdc` | Routing, safety, and single-submission constraints |
 | Command | `commands/kling-ai.md` | `/kling-ai` natural-language entrypoint |
 | Core Skill | `skills/kling-ai/` | OAuth, account, media, Elements, status, and shared contract |

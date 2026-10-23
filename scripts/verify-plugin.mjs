@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SERVER_KEY = "kling-ai";
-const ENDPOINT = "https://kling.ai/mcp/plugin";
+const ENDPOINT = "https://klingai.com/mcp";
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -25,7 +25,7 @@ export function verifyPlugin() {
 
   check(manifest.name === "kling-ai", "manifest name must be kling-ai");
   check(manifest.version === packageJson.version, "manifest and package versions must match");
-  check(manifest.homepage === "https://kling.ai", "homepage must use the Global Kling site");
+  check(manifest.homepage === "https://klingai.com", "homepage must use the China Kling site");
   check(
     manifest.repository === "https://github.com/klingai-tech/cursor-plugin",
     "manifest repository must match this repository"
@@ -61,7 +61,7 @@ export function verifyPlugin() {
     "mcp-app",
     "scripts/kling-monitor.mjs"
   ]) {
-    check(!existsSync(join(repoRoot, forbidden)), `single Global plugin must not bundle ${forbidden}`);
+    check(!existsSync(join(repoRoot, forbidden)), `single China plugin must not bundle ${forbidden}`);
   }
 
   if (failures.length > 0) {

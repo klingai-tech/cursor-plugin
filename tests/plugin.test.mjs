@@ -3,12 +3,12 @@ import test from "node:test";
 
 import { verifyPlugin } from "../scripts/verify-plugin.mjs";
 
-test("the Global Cursor plugin satisfies its package contract", () => {
+test("the China Cursor plugin satisfies its package contract", () => {
   const result = verifyPlugin();
 
   assert.deepEqual(result, {
     name: "kling-ai",
-    endpoint: "https://kling.ai/mcp/plugin",
+    endpoint: "https://klingai.com/mcp",
     version: "1.4.0"
   });
 });
