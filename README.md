@@ -37,9 +37,12 @@ directory:
 
 ```bash
 mkdir -p ~/.cursor/plugins/local/kling-ai
-cp -R .cursor-plugin assets commands rules skills mcp.json README.md \
+cp -R .cursor-plugin assets rules skills mcp.json README.md \
   ~/.cursor/plugins/local/kling-ai/
 ```
+
+If updating an earlier local copy, remove
+`~/.cursor/plugins/local/kling-ai/commands/kling-ai.md` before reloading Cursor.
 
 Restart Cursor or run `Developer: Reload Window`, confirm Kling AI is loaded
 under **Customize → Plugins**, and click **Connect** on its MCP server to
@@ -54,8 +57,7 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
 | Manifest | `.cursor-plugin/plugin.json` | Plugin identity and native component entrypoints |
 | MCP | `mcp.json` | Global remote OAuth MCP |
 | Rule | `rules/kling-ai.mdc` | Routing, safety, and single-submission constraints |
-| Command | `commands/kling-ai.md` | `/kling-ai` natural-language entrypoint |
-| Core Skill | `skills/kling-ai/` | OAuth, account, media, Elements, status, and shared contract |
+| Core Skill | `skills/kling-ai/` | `/kling-ai` entrypoint, OAuth, account, media, Elements, status, and shared contract |
 | Image Skill | `skills/kling-ai-generate-image/` | Image workflows, prompting, and quality gates |
 | Video Skill | `skills/kling-ai-generate-video/` | Video, motion control, duration, and shot planning |
 
@@ -76,6 +78,8 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
    success with usable primary media. An explicit status request queries once.
 
 ## Examples
+
+Select the core Skill with `/kling-ai` in Cursor chat, then enter your request.
 
 > `/kling-ai` Check my authorization and credits without creating a generation task.
 
