@@ -20,7 +20,6 @@
   "logo": "assets/kling-logo.png",
   "rules": "rules",
   "skills": "skills",
-  "commands": "commands",
   "mcpServers": "mcp.json",
   "tags": [
     "media",

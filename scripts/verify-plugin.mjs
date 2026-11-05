@@ -33,10 +33,10 @@ export function verifyPlugin() {
   check(
     manifest.rules === "rules" &&
       manifest.skills === "skills" &&
-      manifest.commands === "commands" &&
       manifest.mcpServers === "mcp.json",
     "manifest must reference native Cursor components"
   );
+  check(!Object.hasOwn(manifest, "commands"), "the core Skill provides the /kling-ai entrypoint");
   check(JSON.stringify(Object.keys(servers)) === JSON.stringify([SERVER_KEY]), `plugin must register only ${SERVER_KEY}`);
   check(servers[SERVER_KEY]?.type === "http", "MCP transport must be http");
   check(servers[SERVER_KEY]?.url === ENDPOINT, `MCP endpoint must be ${ENDPOINT}`);
@@ -44,7 +44,6 @@ export function verifyPlugin() {
   for (const path of [
     "assets/kling-logo.png",
     "rules/kling-ai.mdc",
-    "commands/kling-ai.md",
     "skills/kling-ai/SKILL.md",
     "skills/kling-ai-generate-image/SKILL.md",
     "skills/kling-ai-generate-video/SKILL.md"
@@ -54,6 +53,7 @@ export function verifyPlugin() {
 
   for (const forbidden of [
     ".cursor-plugin/marketplace.json",
+    "commands/kling-ai.md",
     "kling-ai",
     "plugin.json",
     "ui",
