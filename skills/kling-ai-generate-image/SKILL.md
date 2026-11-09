@@ -1,11 +1,13 @@
 ---
 name: kling-ai-generate-image
-description: Generate or edit images through the Kling AI MCP in Cursor. Use for text-to-image, image-to-image, posters, product photography, portraits, covers, advertising stills, visual concepts, and controlled variants.
+description: Write or refine Kling AI image prompts, or generate and edit images through the Kling AI MCP in Cursor. Use for posters, product photography, portraits, covers, advertising stills, visual concepts, and controlled variants.
 ---
 
 # Kling AI image generation
 
-Turn the creative request into one precise, user-confirmed remote image generation. Follow the Cursor OAuth, billing confirmation, single-submission, status, and result rules in the [core Kling Skill](../kling-ai/SKILL.md).
+For prompt-only work, return the requested prompt and finish. Preserve composition requirements such as left-side copy space. Skip MCP calls, submission-setting recommendations, and offers to generate. If generation needs a missing image, ask for it, explain its role, and stop there.
+
+For generation preparation or submission, follow the Cursor OAuth, billing confirmation, single-submission, status, and result rules in the [core Kling Skill](../kling-ai/SKILL.md).
 
 Read [prompt construction](references/prompt-construction.md) for reference images, exact copy, branded assets, or controlled variants. Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work. For Element reuse or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
 
@@ -17,8 +19,7 @@ Read [prompt construction](references/prompt-construction.md) for reference imag
 4. Upload local images first and use only the live input names and returned URLs. Never silently degrade to text-to-image after an upload failure.
 5. Build one prompt covering subject, action, environment, composition, lighting, color, materials, camera language, protected facts, and necessary exclusions.
 6. Show the final mode, model, prompt summary, resolution, aspect ratio, output count, and reference roles. Obtain explicit approval under the core Skill's billing rule; honor an existing explicit authorization for the final settings.
-7. Call the image generation tool exactly once and preserve the task number. If its MCP App mounts, let that one App self-refresh and do not call `query_tasks` from the model. If no App mounts, follow the core Skill's headless polling fallback; never resubmit.
-8. When Cursor renders the MCP App, do not add Markdown media or duplicate links. When no App is rendered, provide one primary image link.
+7. After approval, call the image generation tool once. Follow the core Skill's result rules for a mounted Cursor MCP App, headless polling with a known task number, or a submission without one.
 
 ## Mode rules
 
