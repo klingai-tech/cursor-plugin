@@ -4,7 +4,7 @@ Kling AI for Cursor creates and queries image, video, and motion tasks through
 the OAuth-protected China Kling MCP. This branch contains one Cursor
 plugin for the China service; it does not include a local MCP server.
 
-Version: **1.4.0**
+Version: **1.4.1**
 
 ## Capabilities
 
