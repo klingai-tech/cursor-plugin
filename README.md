@@ -5,7 +5,7 @@ the OAuth-protected Global Kling MCP. This repository contains one Cursor
 plugin for the international service; it does not include a regional variant or
 a local MCP server.
 
-Version: **1.4.0**
+Version: **1.4.1**
 
 ## Capabilities
 
