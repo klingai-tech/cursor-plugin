@@ -41,7 +41,7 @@ A rendering problem is not a generation failure. Preserve the tool result and us
 
 ## Submission fails or times out
 
-Do not retry generation. If a `generationId` is known, query it once. Otherwise report that creation and billing state are unknown: the current MCP cannot list account history or find a task by `taskTraceId`. Any new generation needs fresh explicit authorization.
+If a `generationId` is known, follow the core Skill's App or headless result rules. If no ID is known, report the returned error and any unknown creation or billing state, then stop. A credit balance cannot establish the outcome, and `query_tasks` requires a known ID. Any new attempt needs fresh explicit authorization.
 
 For a provider failure, return the provider message and preserve task IDs. For unsupported arguments, refresh the live schema, revise the rejected settings, and obtain confirmation before any new generation.
 

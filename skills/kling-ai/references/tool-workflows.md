@@ -7,7 +7,7 @@
 3. For Elements, motion-library selections, or local media, follow [asset workflows](asset-workflows.md). A library operation does not authorize generation. Do not silently fall back to text-only generation if a required reference is unavailable.
 4. Show the final mode, model, prompt summary, resolution, duration when applicable, aspect ratio, output count, and reference roles. Include live-required billing disclosures, including per-second billing and input video duration when applicable. Describe shot controls only as declared by the model, without inferring the actual number of cuts. Obtain explicit approval under the core Skill's billing rule.
 5. Call the selected tool once using its live schema, normally `{model, arguments[], inputs[], rationale, taskTraceId}`. Preserve `generationId`.
-6. If the generation MCP App renders, let it query and refresh internally. If no App renders, use headless `query_tasks` at the provider-permitted interval until terminal, cancelled, or the turn cannot continue.
+6. If the generation MCP App renders, let it query and refresh internally. If no App renders and a `generationId` is known, use headless `query_tasks` at the provider-permitted interval until terminal, cancelled, or the turn cannot continue.
 7. A successful submission means accepted, not finished. Confirm terminal success and primary media before reporting completion. Without a rendered App, return the text fallback, task number, and at most one primary media link.
 
 ## Read-only operations
@@ -24,4 +24,4 @@
 - Delete an Element only when the user explicitly identifies the deletion target. A cover replacement that requires delete-and-recreate needs explicit authorization for the ID change.
 - Call `logout` or switch accounts only when explicitly requested. Re-enter native Cursor OAuth through the MCP Connect flow and stop other Kling calls until authorization completes.
 
-Never retry a generation automatically. If no `generationId` was received, report unknown creation state; do not invent task-history or trace-ID lookup capabilities.
+Never retry a generation automatically. If a submission yields no known `generationId`, report the returned error if present and any unknown creation or billing state, then stop.
