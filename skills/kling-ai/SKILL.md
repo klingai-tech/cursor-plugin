@@ -18,6 +18,8 @@ Use only the remote China MCP configured by this plugin: `https://klingai.com/mc
 - Subject library / Elements: use `element_list`, `element_get`, `element_create`, `element_update`, or `element_delete` for the requested operation. Resolve real IDs before reuse.
 - Account and credits: use `query_membership_and_credits`; model capabilities come from `who_am_i`.
 - Existing tasks: use `query_tasks` with a known `generationId`. A status or library request never creates a generation.
+- If a user reports a missing video, follow [result troubleshooting](references/troubleshooting.md#task-is-still-running-or-the-result-app-does-not-render) for the original submission.
+- To continue after topping up, follow [credit recovery](references/tool-workflows.md#resuming-after-a-credit-pause). Check the original submission's task number if it exists. If the user only reports a top-up, refresh the balance without submitting.
 - Sign-out or account switching: act only on an explicit user request, stay on the China endpoint, and complete native Cursor OAuth before further Kling calls.
 
 Call only tools present in the live tool list. An attachment alone does not determine its role; clarify only when first frame, tail frame, identity/product reference, editable source, motion source, or style reference would materially change the request.
@@ -36,19 +38,20 @@ Read [asset workflows](references/asset-workflows.md) for Elements, the motion l
 - Image, video, and motion generation consume credits. Call `who_am_i` during preparation and select only models returned in the current account's `availableModels` for the chosen tool, with their declared arguments, inputs, and combination limits. Follow capability discovery for cross-tool selection and refresh stale definitions before proceeding. Do not infer model access from a tool's existence, membership tier, or static examples.
 - Show the final workflow, model, prompt summary, duration/resolution, aspect ratio, output count, and reference roles. Honor explicit authorization already given for the same unsubmitted intent and unchanged final settings. Otherwise, obtain confirmation before submission. An upload, library operation, or credit check is not generation approval.
 - Include any billing disclosure required by the live model/tool in those final settings. For omni reference that declares per-second billing with input video duration included, explain both facts before submission; output duration alone is not the total billed duration. Do not invent a rate or total credit estimate.
+- Immediately before each generation call, check the balance with `query_membership_and_credits` on the same connection. Pause when the current balance is unavailable, non-positive, or clearly insufficient, following [credit recovery](references/tool-workflows.md#resuming-after-a-credit-pause).
 - Submit at most once per approved intent. A rejected call also counts as an attempt. A new attempt requires fresh explicit authorization after any failure, timeout, ambiguous response, or rendering problem.
 - Do not save an Element automatically during ordinary generation. Element writes and deletion must follow the user's explicit request as described in [asset workflows](references/asset-workflows.md).
 
 ## Generation and results
 
 1. Resolve reference roles, Elements, and motion sources; prepare local media before submission. Use the returned provider references exactly as the selected live schema requires.
-2. Confirm the final billable settings, then call the chosen generation tool once. A multi-shot plan remains one task unless the user approves separate tasks.
+2. Follow the [submission workflow](references/tool-workflows.md#generation) to confirm the final settings, check credits, and call the chosen tool once. A multi-shot plan remains one task unless the user approves separate tasks.
 3. Use `query_tasks` for follow-up only with a known `generationId`. If a submission yields no known ID, report the returned error if present and any unknown creation or billing state, then stop. `query_tasks` requires the ID and cannot search account history or look up `taskTraceId`. A balance check or missing history entry cannot establish the outcome. A status response that omits the ID does not invalidate the known task number.
 4. If Cursor renders the generation MCP App, let that App own task refresh. Do not poll the same task from the model or add duplicate media, thumbnails, or download links.
-5. If no App renders, query at the provider-permitted interval until terminal, cancelled, or the turn cannot continue. Report the actual state and task number, with the tool's text fallback and at most one primary result link. Do not add Markdown image/video embeds or claim an unmounted App was displayed.
+5. If no App renders, query the same `generationId` at the provider-permitted interval until terminal, cancelled, rate-limited, or the turn cannot continue. If a status lookup returns a resource error and explicitly asks to check the same ID later, allow one further lookup at that interval during ongoing polling. Stop on a repeated error or other query failure. Use the tool's text fallback and at most one primary result link. Do not add Markdown image/video embeds or claim an unmounted App was displayed.
 6. For an explicit status request, query once and report the current state; do not start a long polling loop.
 7. Claim completion only after terminal success with usable primary media. If work-level status exists it must also be successful; a video cover alone is not a completed video.
-8. Use the returned status, known task number, any result link allowed above, and effective submitted settings. Report an actual charge only when the tool returns it, such as `creditsConsumed`. Submission count and a local attempt budget are separate from credits.
+8. Use the returned status, known task number, any result link allowed above, and effective submitted settings. If a lookup fails or polling stops early, report the most recently confirmed state, such as submitted or processing, and say that the current state could not be refreshed. Report the state as unconfirmed only if no state was ever confirmed. Report an actual charge only when the tool returns it, such as `creditsConsumed`. Submission count and a local attempt budget are separate from credits.
 
 ## Quality defaults
 
@@ -64,5 +67,6 @@ Apply only when the user has not specified another choice and the live model sup
 
 - Unauthorized: use native Cursor OAuth and continue only after authorization succeeds.
 - Unsupported argument: refresh the live definitions, revise only unsupported settings, and obtain confirmation before a new generation.
-- Insufficient credits or provider failure: report the provider message and preserve the task number; do not resubmit.
+- Insufficient credits: follow [credit recovery](references/tool-workflows.md#resuming-after-a-credit-pause) and report whether the task was paused before submission, rejected, or remains unconfirmed.
+- Provider failure: report the sanitized provider message and preserve the task number. Follow [troubleshooting](references/troubleshooting.md) for resource and service errors.
 - Expired media URL: query the original `generationId` for current outputs before reuse. A failed refresh is not permission to create a replacement task.

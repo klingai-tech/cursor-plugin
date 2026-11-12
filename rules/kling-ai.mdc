@@ -14,6 +14,11 @@ pair supports the request. Confirm final billable settings before generation
 unless the same unsubmitted intent and unchanged settings are already explicitly
 authorized. Submit each confirmed intent at most once.
 
+Check current credits on the same connection immediately before submitting. If
+the balance is unavailable or insufficient, pause and follow the core Skill's
+recovery workflow. When the user asks to resume and the original submission
+has a task number, check that task first.
+
 Let a mounted generation MCP App refresh its own task. If no App is mounted
 and a `generationId` is known, query at the provider-permitted interval until
 terminal, cancelled, or the turn cannot continue. Report completion only after

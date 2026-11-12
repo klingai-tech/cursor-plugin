@@ -68,13 +68,21 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
    `taskTraceId` for the same objective.
 3. Show final billable settings, including live-required billing disclosures, and
    obtain explicit confirmation unless those settings are already authorized.
-4. Call a generation tool at most once per confirmed intent; never retry an
+4. Check the current credit balance on the same connection immediately before
+   submission. If the balance is unavailable or insufficient, pause the task.
+5. Call a generation tool at most once per confirmed intent; never retry an
    ambiguous submission automatically.
-5. When Cursor mounts the generation MCP App, let that App refresh internally
+6. When Cursor mounts the generation MCP App, let that App refresh internally
    instead of creating duplicate model-side `query_tasks` cards.
-6. If no App mounts, query at the provider-permitted interval until terminal,
+7. If no App mounts, query at the provider-permitted interval until terminal,
    cancelled, or the turn cannot continue. Report completion only after terminal
    success with usable primary media. An explicit status request queries once.
+
+If credits run out, sign in to the same account on your region's official Kling
+site and top up. Return to the same Cursor conversation and ask to continue the
+paused task. If the original submission has a task number, Cursor checks it first.
+If a new submission is safe, Cursor rechecks the balance and uses the original
+settings.
 
 ## Examples
 
