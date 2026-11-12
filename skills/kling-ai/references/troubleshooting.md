@@ -12,12 +12,21 @@ For an authorization failure, use Cursor's MCP Connect flow for `kling-ai`, and 
 
 OAuth discovery and client registration belong to the host. Do not require a custom client name or try to add one to generation arguments, headers, or the MCP URL. If the server rejects the host's registration, preserve the sanitized error for the service maintainer instead of guessing metadata or requesting credentials in chat.
 
-## Upload fails
+## Parameter or resolution validation fails
+
+- Check the actual request for a missing, null, empty, or whitespace-only top-level `model`. Compare `arguments[]` and `inputs[]` with the selected model's required fields, including `prompt` and media slots. Use the exact slot names, such as `image_1` or `first_image`, declared for that model.
+- Refresh live definitions and correct only the rejected fields or missing references. If an explicit resolution such as `1080p` was rejected, compare the submitted value with the refreshed enum and its conditions for the same account, connection, tool, and model. If they match, record the mismatch with the trace ID and sanitized fields for the maintainer. Ask the user to choose if their requested setting is unavailable.
+- When diagnosing field changes, compare the model's original tool-call arguments with Cursor's outgoing MCP request and the live schema's `required` list if those are available. Record missing diagnostic data and omit credentials and signed URLs.
+
+## Upload or asset reference fails
 
 - Read the live `file_upload` schema and [asset workflow](asset-workflows.md).
 - A ticket is only the first step. Complete the multipart upload with `ticket` and binary `file`, then use the confirmed media URL.
 - Reuse the objective's `taskTraceId` where accepted. Never send local paths or expired signed URLs as remote media inputs.
 - If upload is unavailable or fails, stop before dependent Element writes or generation. Do not silently switch to text-only generation or loop on upload requests.
+- If the error concerns a missing resource or invalid signature, verify the complete upload response URL, its source, and the bound slot. Fix the reference and complete the authorized first submission only if the failure was in upload or local validation and generation has yet to be called.
+- If the service says to retry with the same generation ID, look up the current submission's confirmed `generationId` using the [result rules](../SKILL.md#generation-and-results). An upload ID or a source image or video task number cannot stand in for it. If no ID belongs to this submission, preserve its trace ID and report that task creation and charging remain unconfirmed.
+- For diagnosis, compare available stages of the same request from upload response through Cursor's model input, original tool arguments, and outgoing MCP request. Record unavailable stages. Compare only redacted URL summaries and query parameter names. A `ResourceNotFound` error alone cannot identify the stage that failed.
 
 ## Model capability mismatch
 
@@ -35,7 +44,7 @@ If the mismatch remains, report that the current connection did not return the r
 
 ## Task is still running or the result App does not render
 
-If the generation MCP App is mounted, let it refresh internally. Otherwise use headless `query_tasks` at the provider-permitted interval until terminal, cancellation, or the turn cannot continue. A direct status request queries once. Keep the task number for later follow-up.
+Follow the [Cursor result rules](../SKILL.md#generation-and-results). If the user reports a missing video and this submission has a task number, use the mounted App's current status or look up that task when the App is unavailable. Report progress while it runs, deliver the usable video on success, and preserve the task number and reason on failure. If a lookup fails, report the last confirmed state and explain that the refresh failed.
 
 A rendering problem is not a generation failure. Preserve the tool result and use its text fallback and at most one primary result link. Do not register a local MCP server, embed duplicate media, or claim that an unmounted App was displayed. Report success only after terminal success with usable primary media; a cover image is not the video.
 
@@ -44,6 +53,16 @@ A rendering problem is not a generation failure. Preserve the tool result and us
 If a `generationId` is known, follow the core Skill's App or headless result rules. If no ID is known, report the returned error and any unknown creation or billing state, then stop. A credit balance cannot establish the outcome, and `query_tasks` requires a known ID. Any new attempt needs fresh explicit authorization.
 
 For a provider failure, return the provider message and preserve task IDs. For unsupported arguments, refresh the live schema, revise the rejected settings, and obtain confirmation before any new generation.
+
+Treat a generic service-unavailable message as a service error even when the outer code is `InvalidParameter`. Follow up on a known task number. If there is no task number and the submission is ambiguous, stop and preserve the trace ID. Apply parameter troubleshooting when the service identifies a specific field.
+
+## Rate limit or full generation queue
+
+Distinguish a full generation queue from a rate-limited status query. For a full queue, keep the original settings and any task number. Report the returned waiting instructions and confirmed task state. If the service has no queue for this request, distinguish a confirmed rejection from an unconfirmed submission. When the user asks to continue, check any known task first and follow the [single-submission workflow](tool-workflows.md#generation). If a status query is rate-limited, stop polling and report the last confirmed state and task number.
+
+## Insufficient credits
+
+Use the current balance and provider response to distinguish a task paused before submission, a rejected call, and an unconfirmed submission. Membership allowances alone do not establish the available balance. Follow [credit recovery](tool-workflows.md#resuming-after-a-credit-pause). A balance change or request to view an existing result does not authorize a new submission.
 
 ## Result link expired
 

@@ -13,11 +13,11 @@ Call only tools that exist in the current tool list.
 ## Generation request
 
 - Generation tools normally use `model`, `arguments[]`, `inputs[]`, `rationale`, and `taskTraceId`; the live tool `inputSchema` defines the actual outer request and encoding. Omit unused inputs when allowed, but never omit required media.
-- `model` must be a canonical model name returned by `who_am_i` for the selected tool.
-- Each `arguments[]` item is `{name, value}`. Pass `value` as a string when required by the tool description, and pass only arguments declared for the selected model.
-- Each `inputs[]` item is `{name, inputType, url}`. Obtain names and `inputType` values from the live schema; upload local media before using it.
+- Always pass the canonical model ID from `who_am_i` for the selected tool in the top-level `model` field, even if an older tool schema omits it from `required`. If the user did not name a model, select a compatible one and pass its ID. Reject missing, null, empty, or whitespace-only values.
+- Each `arguments[]` item is `{name, value}`. Include every required argument once and use strings for values when the schema requires them. Include a meaningful `prompt` when required. Use an empty prompt only when the current mode permits it and it fits the user's intent. Use the selected model's exact resolution field, enum, and conditions.
+- Each `inputs[]` item is `{name, inputType, url}`. Bind every required media input to the selected model's exact slot and use the tool schema's literal `inputType`, including uppercase `URL` when declared. Pass uploaded references according to the [media upload workflow](asset-workflows.md#local-media-uploads).
 - `rationale` explains the user's objective and parameter choices. It does not replace the generation prompt.
-- `taskTraceId` is a UUIDv7. Reuse it for one objective and create a fresh value for an unrelated objective.
+- `taskTraceId` is a UUIDv7. Reuse it for one objective and create a fresh value for an unrelated objective. It supports tracing and does not make a repeated generation call idempotent.
 
 Follow [capability discovery](capability-discovery.md) before submission and reuse its successful response for the same preparation unless invalidated. Model capabilities come from `who_am_i`, while request structure comes from the tool `inputSchema`; general descriptions do not expand model capabilities. Refresh inconsistent definitions and stop if no valid request satisfies both. Apply the selected model's [parameter and combination constraints](model-parameters.md).
 
