@@ -1,6 +1,15 @@
 # Motion and shot planning
 
+## Decide whether to revise
+
+- Honor requests to use a prompt verbatim. Otherwise, review the supplied prompt for the subject, action, camera movement, timing, continuity, and constraints that affect the intended video. Leave unspecified creative details to the model when they do not affect the user's goal.
+- If the prompt is clear, consistent, and sufficient for the task, return or submit it verbatim. Apply the same check to a general request to optimize it.
+- Resolve material gaps, ambiguities, or conflicts from the request and reference media first. If a key detail is still unclear, ask before proceeding.
+- Change only the wording needed to satisfy the request or close the gap. If the user supplies a sentence that can be added directly, append it and preserve the rest verbatim. When adding an ending, use the requested action, timing, and final position. Leave the intervening movement to the model unless the user specifies it. For generation, change reference syntax only as required by the selected model. If that conflicts with a request for verbatim use, clarify before submitting.
+
 ## Motion-first prompt order
+
+Use the relevant items when writing a new prompt or adding missing information. Express action and continuity first, then use visible details such as lighting, materials, depth of field, and framing to convey the requested look.
 
 1. Format and duration intent.
 2. Opening frame and subject position.
