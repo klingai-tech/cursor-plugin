@@ -5,13 +5,13 @@ description: Write or refine Kling AI image prompts, or generate and edit images
 
 # Kling AI image generation
 
-For prompt-only work, return the requested prompt and finish. Preserve composition requirements such as left-side copy space. Skip MCP calls, submission-setting recommendations, and offers to generate. If generation needs a missing image, ask for it, explain its role, and stop there.
+For prompt-only work, use [prompt construction](references/prompt-construction.md) to decide whether the prompt needs changes, then return it and finish. Preserve composition requirements such as left-side copy space. Skip MCP calls, submission-setting recommendations, and offers to generate. If generation needs a missing image, ask for it, explain its role, and stop there.
 
 For generation preparation or submission, follow the Cursor OAuth, billing confirmation, single-submission, status, and result rules in the [core Kling Skill](../kling-ai/SKILL.md).
 
 To continue a paused image task, follow [credit recovery](../kling-ai/references/tool-workflows.md#resuming-after-a-credit-pause) before preparing another submission. Keep the original prompt, settings, and reference roles.
 
-Read [prompt construction](references/prompt-construction.md) for reference images, exact copy, branded assets, or controlled variants. Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work. For Element reuse or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
+Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work. For Element reuse or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
 
 ## Workflow
 
@@ -19,7 +19,7 @@ Read [prompt construction](references/prompt-construction.md) for reference imag
 2. Ask only for missing information that materially changes the result: subject, destination and aspect ratio, required copy, reference roles, protected facts, or output count.
 3. Create or reuse the UUIDv7 `taskTraceId` for this objective, follow [capability discovery](../kling-ai/references/capability-discovery.md), and select a compatible tool/model pair from this account's `who_am_i` response. Apply [model parameters](../kling-ai/references/model-parameters.md) before constructing arguments or reference bindings.
 4. Upload local images when needed and bind the complete returned URL to the selected model's input slot, such as `image_1` when required. Use the exact `inputType` declared by the tool schema, including uppercase `URL` when declared. Reuse valid upload references when resuming. Never silently degrade to text-to-image after an upload failure.
-5. Build one prompt covering subject, action, environment, composition, lighting, color, materials, camera language, protected facts, and necessary exclusions.
+5. Follow [prompt construction](references/prompt-construction.md) for each new generation, edit, or variant. Reuse a suitable prompt verbatim, make only necessary changes, or write a new prompt if needed. Check that the prompt and actual reference roles agree.
 6. Show the final mode, model, prompt summary, resolution, aspect ratio, output count, and reference roles. Obtain explicit approval under the core Skill's billing rule; honor an existing explicit authorization for the final settings.
 7. After approval, check the actual request against the [MCP contract](../kling-ai/references/mcp-contract.md), including the top-level `model`, required arguments, and media slots. Immediately before calling `text_to_image` or `image_to_image`, call `query_membership_and_credits` on the same connection. If the balance is unavailable or insufficient, pause even if the upload succeeded. Otherwise submit once and follow the core Skill's result rules.
 
