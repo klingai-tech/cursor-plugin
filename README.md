@@ -9,8 +9,10 @@ Version: **1.4.1**
 
 ## Capabilities
 
-- Text-to-image, image-to-image, posters, product visuals, portraits, and covers
-- V4 video recommendations, omni reference, keyframes, audio-guided video, and motion control
+- Text-to-image, reference-guided editing, and coherent image series with compatible models. If no image model is specified, prefer the account's compatible default for the chosen entry point.
+- Kling 4.0: text-to-video, first/last/intermediate keyframes, and Omni-Ref with images, videos, audio, and Elements. Outputs are 3–30 seconds at 720p, with 1080p available to eligible accounts.
+- Kling 4.0 Flash: text-to-video, single first-frame image-to-video, and Omni-Ref with images, videos, and Elements. Outputs are 3–20 seconds at 720p.
+- Both Omni-Ref models support smart shot splitting. Synchronized sound generation and source audio retention are mutually exclusive. Model availability and settings follow the connected account.
 - Live account-scoped model discovery, reference limits, and billing disclosures
 - Media upload, Element management, motion library, credit checks, and task status
 - Confirmation immediately before credit-consuming generation
@@ -77,7 +79,8 @@ reload Cursor and start a new conversation so it receives the latest tool snapsh
    instead of creating duplicate model-side `query_tasks` cards.
 7. If no App mounts, query at the provider-permitted interval until terminal,
    cancelled, or the turn cannot continue. Report completion only after terminal
-   success with usable primary media. An explicit status request queries once.
+   success with the requested number and type of usable results. If fewer results
+   are available, report the actual count. An explicit status request queries once.
 
 If credits run out, sign in to the same account on your region's official Kling
 site and top up. Return to the same Cursor conversation and ask to continue the
@@ -85,9 +88,13 @@ paused task. If the original submission has a task number, Cursor checks it firs
 If a new submission is safe, Cursor rechecks the balance and uses the original
 settings.
 
-## Examples
+## Suggested prompts
 
 Select the core Skill with `/kling-ai` in Cursor chat, then enter your request.
+
+Try the five suggested prompts in [English](skills/kling-ai/references/prompt-examples.md#suggested-prompts) or [中文](skills/kling-ai/references/prompt-examples.md#推荐提示词).
+
+## More examples
 
 > `/kling-ai` Check my authorization and credits without creating a generation task.
 

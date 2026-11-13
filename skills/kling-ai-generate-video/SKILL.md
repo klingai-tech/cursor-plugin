@@ -1,6 +1,6 @@
 ---
 name: kling-ai-generate-video
-description: Write or refine Kling AI video prompts and storyboards, or generate videos through the Kling AI MCP in Cursor. Use for text-to-video, image-to-video, omni reference (全能参考), Kling 4.0 / V4 and V4 Flash, keyframes, audio-guided video, motion control, product showcases, advertising clips, social videos, and cinematic shots.
+description: Write or refine Kling AI video prompts and storyboards, or generate videos through the Kling AI MCP in Cursor. Use for text-to-video, image-to-video, omni reference (全能参考), Kling 4.0 (V4) and Kling 4.0 Flash (V4 Flash), keyframes, audio-guided video, motion control, product showcases, advertising clips, social videos, and cinematic shots.
 ---
 
 # Kling AI video generation
