@@ -1,6 +1,6 @@
 ---
 name: kling-ai-generate-video
-description: Write Kling AI and 可灵 video prompts or storyboards, prepare final settings or resolve a missing reference, and submit approved video generation in Cursor. Covers text, image, omni reference, keyframes, audio, and motion control.
+description: Write Kling AI and 可灵 video prompts or storyboards, prepare final settings or resolve a missing reference, and submit approved video generation in Cursor. Covers Kling 4.0 (V4) and Kling 4.0 Flash (V4 Flash), text, image, omni reference, keyframes, audio, and motion control.
 ---
 
 # Kling AI video generation

@@ -13,6 +13,8 @@ To continue a paused image task, follow [credit recovery](../kling-ai/references
 
 Read [scene patterns](references/scene-patterns.md) for product, advertising, portrait, poster, or cover work. For Element reuse or local media, also read the core [asset workflows](../kling-ai/references/asset-workflows.md).
 
+When no model is specified, prefer the selected entry point's live `defaultModel` if it is available to the account and meets the request. If the user explicitly asks for the default model, use it when it meets the request. If it cannot fulfill the request, explain the limitation and wait for the user to choose how to proceed.
+
 ## Workflow
 
 1. Use `text_to_image` for a new image. Use `image_to_image` when source media controls identity, product structure, composition, editable content, or style. An attachment alone does not determine the mode.
@@ -27,6 +29,7 @@ Read [scene patterns](references/scene-patterns.md) for product, advertising, po
 
 - Element support follows the selected model's declared resource types and binding argument, not the entry point name.
 - Image-to-image may use one or more images with explicit roles. State the purpose of every image when multiple references are present.
+- For a coherent image series, choose a live model that explicitly supports series generation and the requested count. Prefer the compatible default, or another compatible model when the user leaves the choice open. Set the model's declared count field and enable its series control only when declared. Multiple output images alone do not establish series support. If no eligible model supports both, explain the limitation.
 - Before using an Element subject, follow the core asset workflow, call `element_get`, and choose a model that explicitly supports the resource type and binding argument. Check individual and combined reference caps, and bind the exact ID with the model's declared prompt and structured syntax.
 - For a variant, lock every fact that the user did not ask to change. Change one major dimension per confirmed generation.
 - A status request uses only `query_tasks`; it does not create an image.

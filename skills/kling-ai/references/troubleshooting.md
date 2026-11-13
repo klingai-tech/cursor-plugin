@@ -46,7 +46,7 @@ If the mismatch remains, report that the current connection did not return the r
 
 Follow the [Cursor result rules](../SKILL.md#generation-and-results). If the user reports a missing video and this submission has a task number, use the mounted App's current status or look up that task when the App is unavailable. Report progress while it runs, deliver the usable video on success, and preserve the task number and reason on failure. If a lookup fails, report the last confirmed state and explain that the refresh failed.
 
-A rendering problem is not a generation failure. Preserve the tool result and use its text fallback and at most one primary result link. Do not register a local MCP server, embed duplicate media, or claim that an unmounted App was displayed. Report success only after terminal success with usable primary media; a cover image is not the video.
+A rendering problem is not a generation failure. Preserve the tool result and follow the core Skill's text fallback and completion rules. Do not register a local MCP server, embed duplicate media, or claim that an unmounted App was displayed.
 
 ## Submission fails or times out
 

@@ -3,7 +3,7 @@
   "version": "1.4.1",
   "private": true,
   "type": "module",
-  "description": "Build your own AI creative workflow with Kling MCP",
+  "description": "Generate and edit images, create videos with Kling 4.0 and Kling 4.0 Flash, and reuse Elements through Kling MCP.",
   "scripts": {
     "check": "node scripts/verify-plugin.mjs",
     "test": "node --test tests/*.test.mjs"

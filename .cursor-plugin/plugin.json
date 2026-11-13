@@ -1,7 +1,7 @@
 {
   "name": "kling-ai",
   "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
-  "description": "Build your own AI creative workflow with Kling MCP",
+  "description": "Generate and edit images, create videos with Kling 4.0 and Kling 4.0 Flash, and reuse Elements through Kling MCP.",
   "version": "1.4.1",
   "author": {
     "name": "KLING AI"
