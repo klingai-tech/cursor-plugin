@@ -8,7 +8,7 @@ Version: **1.4.1**
 
 ## Capabilities
 
-- Text-to-image, reference-guided editing, and coherent image series with compatible models. If no image model is specified, prefer the account's compatible default for the chosen entry point.
+- Text-to-image, reference-guided editing, and coherent image series. If no image model is specified, prefer Kling Image 4.0 when it is available and meets the request, then consider the account's compatible default.
 - [Kling Image 4.0](https://kling.ai/quickstart/kling-image-4-user-guide) supports native 8K and Series Mode for up to 10 coherent images in one generation. Available settings follow the connected account's MCP capabilities.
 - Kling 4.0: text-to-video, first/last/intermediate keyframes, and Omni-Ref with images, videos, audio, and Elements. Outputs are 3–30 seconds at 720p, with 1080p available to eligible accounts.
 - Kling 4.0 Flash: text-to-video, single first-frame image-to-video, and Omni-Ref with images, videos, and Elements. Outputs are 3–20 seconds at 720p.

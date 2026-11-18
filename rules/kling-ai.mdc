@@ -9,8 +9,8 @@ For Kling requests, use `$kling-ai` and route creative work to
 configured `kling-ai` China MCP at `https://klingai.com/mcp/plugin`.
 For prompt-only or storyboard-only requests, deliver the text without MCP calls.
 During generation preparation, discover live model capabilities across relevant
-tools, including `omni_ref_video` when available. Recommend V4 when an eligible
-pair supports the request. Confirm final billable settings before generation
+tools and follow the dedicated Skill's model preferences. For video, include
+`omni_ref_video` when available. Confirm final billable settings before generation
 unless the same unsubmitted intent and unchanged settings are already explicitly
 authorized. Submit each confirmed intent at most once.
 
