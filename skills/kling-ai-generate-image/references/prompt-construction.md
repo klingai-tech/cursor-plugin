@@ -26,6 +26,10 @@ Translate abstract requests such as "premium," "cinematic," or "high quality" in
 
 Assign roles before writing the creative prompt. Identity, product structure, composition, style, and official logo references are not interchangeable. Transfer only the visual traits the user selected from a style reference; do not transfer identity or composition unintentionally.
 
+## Coherent image series
+
+Describe what stays consistent across the series, such as the subject, outfit, or visual style. If the user specifies a sequence, preserve its order and match the scene count to the requested output count.
+
 ## Exact text
 
 - Preserve user-provided copy verbatim.
