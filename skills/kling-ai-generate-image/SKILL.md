@@ -1,6 +1,6 @@
 ---
 name: kling-ai-generate-image
-description: Write or refine Kling AI image prompts, or generate and edit images through the Kling AI MCP in Cursor. Use for posters, product photography, portraits, covers, advertising stills, visual concepts, and controlled variants.
+description: Write or refine Kling AI image prompts, or generate and edit images through the Kling AI MCP in Cursor. Use for Kling Image 4.0, coherent image series, posters, product photography, portraits, covers, advertising stills, visual concepts, and controlled variants.
 ---
 
 # Kling AI image generation
@@ -27,9 +27,10 @@ When no model is specified, prefer the selected entry point's live `defaultModel
 
 ## Mode rules
 
+- For Kling Image 4.0 (可灵图片 4.0), check the selected tool's live support for the requested resolution and generation mode together. The model supports native 8K and up to 10 images in Series Mode, subject to the connected account's available settings. Use the exact live resolution value when requested.
 - Element support follows the selected model's declared resource types and binding argument, not the entry point name.
 - Image-to-image may use one or more images with explicit roles. State the purpose of every image when multiple references are present.
-- For a coherent image series, choose a live model that explicitly supports series generation and the requested count. Prefer the compatible default, or another compatible model when the user leaves the choice open. Set the model's declared count field and enable its series control only when declared. Multiple output images alone do not establish series support. If no eligible model supports both, explain the limitation.
+- For a coherent image series, choose a live model that explicitly supports series generation and the requested count. Prefer the compatible default, or another compatible model when the user leaves the choice open. Set the model's declared count field and enable its series control when declared. Multiple output images alone do not establish series support. If no eligible model supports the requested settings together, explain the limitation before submission.
 - Before using an Element subject, follow the core asset workflow, call `element_get`, and choose a model that explicitly supports the resource type and binding argument. Check individual and combined reference caps, and bind the exact ID with the model's declared prompt and structured syntax.
 - For a variant, lock every fact that the user did not ask to change. Change one major dimension per confirmed generation.
 - A status request uses only `query_tasks`; it does not create an image.

@@ -14,19 +14,19 @@ test("the China Cursor plugin satisfies its package contract", () => {
   });
 });
 
-test("suggested prompts cover image series, both 4.0 models, motions, and Elements in both languages", () => {
+test("suggested prompts cover Image 4.0, both 4.0 video models, motions, and Elements in both languages", () => {
   const examples = readFileSync(new URL("../skills/kling-ai/references/prompt-examples.md", import.meta.url), "utf8");
 
   for (const [heading, expected] of [
     ["Suggested prompts", [
-      /series of three images/,
+      /Kling Image 4\.0.*series of three 8K images in one request/,
       /Kling 4\.0 to generate a 20/,
       /Kling 4\.0 Flash.*20-second, 720p/,
       /motion library/,
       /reusable Element/
     ]],
     ["推荐提示词", [
-      /一次生成 3 张连续组图/,
+      /可灵图片 4\.0 一次生成 3 张 8K 连续组图/,
       /可灵 4\.0 生成一段 20 秒/,
       /可灵 4\.0 Flash.*首帧.*20 秒、720p/,
       /动作库/,
