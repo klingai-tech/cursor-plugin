@@ -1,11 +1,91 @@
 # Kling AI for Cursor
 
-Kling AI for Cursor creates and queries image, video, and motion tasks through
-the OAuth-protected Global Kling MCP. This repository contains one Cursor
-plugin for the international service; it does not include a regional variant or
-a local MCP server.
+Generate images and videos, reuse Elements, and track Kling tasks from Cursor
+Agent chat. This is the **Global** plugin on the `main` branch, version **1.4.1**.
+Using a China account? See the [China plugin on the `cn` branch](https://github.com/klingai-tech/cursor-plugin/tree/cn).
 
-Version: **1.4.1**
+## Quick start
+
+### 1. Install the plugin
+
+Open Cursor desktop, switch the chat to **Agent**, and paste this request.
+
+> Install the Kling AI Cursor plugin from https://github.com/klingai-tech/cursor-plugin
+> using the `main` branch. Follow Cursor’s local plugin instructions, then guide me
+> through reloading Cursor, connecting my Kling AI Global account, and checking
+> the connection and credits before creating any generation tasks.
+
+[Official Kling MCP & CLI guide](https://kling.ai/app/mcp/guide) ·
+[Cursor local plugin instructions](https://cursor.com/docs/plugins#test-plugins-locally)
+
+#### Install manually
+
+On macOS or Linux, run the following in a terminal.
+
+```bash
+git clone --branch main --single-branch https://github.com/klingai-tech/cursor-plugin.git
+cd cursor-plugin
+mkdir -p ~/.cursor/plugins/local/kling-ai
+cp -R .cursor-plugin assets rules skills mcp.json README.md ~/.cursor/plugins/local/kling-ai/
+```
+
+<details>
+<summary>Windows PowerShell</summary>
+
+```powershell
+git clone --branch main --single-branch https://github.com/klingai-tech/cursor-plugin.git
+Set-Location cursor-plugin
+$pluginDir = Join-Path $HOME '.cursor/plugins/local/kling-ai'
+New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
+Copy-Item -Recurse -Force -Path .cursor-plugin, assets, rules, skills, mcp.json, README.md -Destination $pluginDir
+```
+
+</details>
+
+If you already have the repository, update your `main` checkout and run the
+copy commands from its root. When upgrading a local install that still has
+`commands/kling-ai.md` in the plugin folder, remove that legacy file before reloading.
+
+The [Cursor Directory listing](https://cursor.directory/plugins/kling-ai) installs
+its rule and MCP entry individually. Use the steps above to load the full plugin
+and its `/kling-ai` Skill.
+
+### 2. Connect your Kling AI account
+
+1. Restart Cursor or run **Developer: Reload Window** from the Command Palette.
+2. Open **Customize → Plugins** and check that **Kling AI** is loaded. Find the
+   enabled `kling-ai` MCP server in **Customize** and click **Connect**.
+3. In the browser, sign in to your Kling AI Global account and authorize Cursor.
+   Return to Cursor and open a new Agent chat. The plugin supplies
+   `https://kling.ai/mcp/plugin` in its bundled [MCP config](mcp.json) and Cursor
+   handles OAuth.
+
+### 3. Try it in Agent chat
+
+Type `/kling-ai`, select the Skill, and send a prompt.
+
+- **Check the connection** · Check my Kling AI connection and available credits. Skip generation.
+- **Generate an image** · Create a 4:5 product poster of a glass perfume bottle in warm studio light. Show the settings and wait for confirmation.
+- **Animate a reference** · Use the attached product photo as the first frame of a 5-second video. Keep the product fixed while the camera slowly pushes in.
+
+For reference-based requests, attach the image or video in chat and say how it
+should be used. For generation, review the final settings and confirm the
+credit-consuming submission. Follow progress in the result card when it appears.
+You can also ask Cursor to look up an existing task by its task number.
+
+See more prompt examples in [English](skills/kling-ai/references/prompt-examples.md#suggested-prompts)
+or [中文](skills/kling-ai/references/prompt-examples.md#推荐提示词).
+
+## Troubleshooting
+
+- **Plugin or Skill missing.** Check that `.cursor-plugin/plugin.json` is inside the
+  local plugin folder, reload Cursor, and start a new Agent chat. On an Enterprise
+  account, your admin can check **Allow Local Plugin Imports**.
+- **Connection or account issue.** Keep one Kling MCP entry active in Cursor and
+  reconnect the plugin’s `kling-ai` server. When switching from China to Global,
+  disconnect the previous session and authorize your Global account.
+- **Task still running or result card missing.** Ask Cursor to check the existing
+  task number, if available. For other issues, see the [troubleshooting guide](skills/kling-ai/references/troubleshooting.md).
 
 ## Capabilities
 
@@ -19,39 +99,6 @@ Version: **1.4.1**
 - Confirmation immediately before credit-consuming generation
 - At most one submission per confirmed intent
 - One self-refreshing MCP App per generation when available
-
-## MCP endpoint
-
-The plugin registers exactly one HTTP MCP server with the key
-`kling-ai` and endpoint `https://kling.ai/mcp/plugin`. Cursor manages its
-OAuth connection. Do not add a second Kling MCP configuration or paste an API
-key, token, cookie, or authorization header into chat.
-
-## Local installation
-
-The [Cursor Directory listing](https://cursor.directory/plugins/kling-ai) offers
-component-level actions: **Add to Cursor** under Rules adds a rule, and the same
-button under MCP Servers adds only an MCP server. These actions do not install
-the complete plugin or its Skills, so they do not create an entry under
-**Customize → Plugins**. Use the local installation below for the complete bundle.
-
-From the repository root, copy the plugin components into Cursor's local plugin
-directory:
-
-```bash
-mkdir -p ~/.cursor/plugins/local/kling-ai
-cp -R .cursor-plugin assets rules skills mcp.json README.md \
-  ~/.cursor/plugins/local/kling-ai/
-```
-
-If updating an earlier local copy, remove
-`~/.cursor/plugins/local/kling-ai/commands/kling-ai.md` before reloading Cursor.
-
-Restart Cursor or run `Developer: Reload Window`, confirm Kling AI is loaded
-under **Customize → Plugins**, and click **Connect** on its MCP server to
-complete OAuth. When upgrading from 1.0.2, reconnect the MCP server to authorize
-the updated `/mcp/plugin` endpoint. After updating a Skill or MCP configuration,
-reload Cursor and start a new conversation so it receives the latest tool snapshot.
 
 ## Components
 
@@ -88,22 +135,6 @@ site and top up. Return to the same Cursor conversation and ask to continue the
 paused task. If the original submission has a task number, Cursor checks it first.
 If a new submission is safe, Cursor rechecks the balance and uses the original
 settings.
-
-## Suggested prompts
-
-Select the core Skill with `/kling-ai` in Cursor chat, then enter your request.
-
-Try the five suggested prompts in [English](skills/kling-ai/references/prompt-examples.md#suggested-prompts) or [中文](skills/kling-ai/references/prompt-examples.md#推荐提示词).
-
-## More examples
-
-> `/kling-ai` Check my authorization and credits without creating a generation task.
-
-> `/kling-ai` Create a 4:5 product poster. Show final settings and wait for confirmation.
-
-> `/kling-ai` Create a five-second 16:9 continuous shot with a slow camera push-in.
-
-> `/kling-ai` Query the current state of this task number once. Do not create a new task.
 
 ## Validation
 
