@@ -1,110 +1,116 @@
-# Kling AI for Cursor
+# 可灵 AI Cursor 插件
 
-Kling AI for Cursor creates and queries image, video, and motion tasks through
-the OAuth-protected China Kling MCP. This branch contains one Cursor
-plugin for the China service; it does not include a local MCP server.
+在 Cursor 的 Agent 对话中生成图片和视频、复用主体、查询任务进度。
+这是 `cn` 分支的**国内版**，版本 **1.4.1**。使用国际站账号请前往
+[`main` 分支](https://github.com/klingai-tech/cursor-plugin/tree/main)。
 
-Version: **1.4.1**
+## 快速开始
 
-## Capabilities
+### 1. 安装插件
 
-- Text-to-image, reference-guided editing, and coherent image series. If no image model is specified, prefer Kling Image 4.0 when it is available and meets the request, then consider the account's compatible default.
-- [Kling Image 4.0](https://kling.ai/quickstart/kling-image-4-user-guide) supports native 8K and Series Mode for up to 10 coherent images in one generation. Available settings follow the connected account's MCP capabilities.
-- Kling 4.0: text-to-video, first/last/intermediate keyframes, and Omni-Ref with images, videos, audio, and Elements. Outputs are 3–30 seconds at 720p, with 1080p available to eligible accounts.
-- Kling 4.0 Flash: text-to-video, single first-frame image-to-video, and Omni-Ref with images, videos, and Elements. Outputs are 3–20 seconds at 720p.
-- Both Omni-Ref models support smart shot splitting. Synchronized sound generation and source audio retention are mutually exclusive. Model availability and settings follow the connected account.
-- Live account-scoped model discovery, reference limits, and billing disclosures
-- Media upload, Element management, motion library, credit checks, and task status
-- Confirmation immediately before credit-consuming generation
-- At most one submission per confirmed intent
-- One self-refreshing MCP App per generation when available
+打开 Cursor 桌面端，在 **Agent** 对话中粘贴这段话。
 
-## MCP endpoint
+> 请从 https://github.com/klingai-tech/cursor-plugin 的 `cn` 分支安装可灵 AI Cursor 插件。
+> 参照 Cursor 的本地插件安装说明，安装后引导我重载 Cursor、连接可灵国内站账号，
+> 并检查连接和可用灵感值。先不要发起生成任务。
 
-The plugin registers exactly one HTTP MCP server with the key
-`kling-ai` and endpoint `https://klingai.com/mcp/plugin`. Cursor manages its
-OAuth connection. Do not add a second Kling MCP configuration or paste an API
-key, token, cookie, or authorization header into chat.
+[可灵 MCP & CLI 官方指南（国内）](https://klingai.com/app/mcp/guide) ·
+[Cursor 本地插件安装说明](https://cursor.com/docs/plugins#test-plugins-locally)
 
-## Local installation
+#### 手动安装
 
-The [Cursor Directory listing](https://cursor.directory/plugins/kling-ai) offers
-component-level actions: **Add to Cursor** under Rules adds a rule, and the same
-button under MCP Servers adds only an MCP server. These actions do not install
-the complete plugin or its Skills, so they do not create an entry under
-**Customize → Plugins**. Use the local installation below for the complete bundle.
-
-From the repository root, copy the plugin components into Cursor's local plugin
-directory:
+macOS 或 Linux 用户可在终端运行以下命令。
 
 ```bash
+git clone --branch cn --single-branch https://github.com/klingai-tech/cursor-plugin.git
+cd cursor-plugin
 mkdir -p ~/.cursor/plugins/local/kling-ai
-cp -R .cursor-plugin assets rules skills mcp.json README.md \
-  ~/.cursor/plugins/local/kling-ai/
+cp -R .cursor-plugin assets rules skills mcp.json README.md ~/.cursor/plugins/local/kling-ai/
 ```
 
-If updating an earlier local copy, remove
-`~/.cursor/plugins/local/kling-ai/commands/kling-ai.md` before reloading Cursor.
+<details>
+<summary>Windows PowerShell</summary>
 
-Restart Cursor or run `Developer: Reload Window`, confirm Kling AI is loaded
-under **Customize → Plugins**, and click **Connect** on its MCP server to
-complete OAuth. When switching from the Global plugin, reconnect the MCP server
-to authorize the China endpoint. After updating a Skill or MCP configuration,
-reload Cursor and start a new conversation so it receives the latest tool snapshot.
+```powershell
+git clone --branch cn --single-branch https://github.com/klingai-tech/cursor-plugin.git
+Set-Location cursor-plugin
+$pluginDir = Join-Path $HOME '.cursor/plugins/local/kling-ai'
+New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
+Copy-Item -Recurse -Force -Path .cursor-plugin, assets, rules, skills, mcp.json, README.md -Destination $pluginDir
+```
 
-## Components
+</details>
 
-| Component | Path | Purpose |
+如果已经克隆过仓库，更新本地 `cn` 分支，在仓库根目录执行复制步骤即可。
+如果旧版的本地插件目录里还有 `commands/kling-ai.md`，请在重载前移除该旧文件。
+
+[Cursor Directory 页面](https://cursor.directory/plugins/kling-ai)会分别添加 Rule 或 MCP。
+要安装包含 `/kling-ai` Skill 的完整插件，请使用上面的本地安装步骤。
+
+### 2. 授权可灵账号
+
+1. 重启 Cursor，或在命令面板运行 **Developer: Reload Window**。
+2. 打开 **Customize → Plugins**，确认 **Kling AI** 已加载。在 **Customize** 中找到已启用的
+   `kling-ai` MCP 服务，点击 **Connect**。
+3. 在浏览器登录可灵国内站账号并授权 Cursor。返回 Cursor，新建一个 Agent 对话。
+   插件自带[国内站 MCP 配置](mcp.json)，地址为 `https://klingai.com/mcp/plugin`，由 Cursor 完成 OAuth 授权。
+
+### 3. 在 Agent 对话中试用
+
+输入 `/kling-ai`，选中 Skill 后发送提示词。
+
+- **检查连接** · 帮我检查可灵账号是否已连接，以及还有多少可用灵感值。先不发起生成。
+- **文生图** · 生成一张 4:5 的香水商品海报，玻璃瓶身、暖色棚拍光。先展示生成设置，等我确认后再提交。
+- **图生视频** · 用我附上的商品图做首帧，生成一段 5 秒视频。商品保持不动，镜头缓慢推近。
+
+有参考图或视频时，把素材附在对话里，并说明它是首帧、风格参考还是主体素材。
+生成会消耗灵感值，请先核对设置再确认提交。提交后可以在结果卡片查看进度，也可以凭任务编号查询已有任务。
+
+更多示例见[中文提示词](skills/kling-ai/references/prompt-examples.md#推荐提示词)和
+[英文提示词](skills/kling-ai/references/prompt-examples.md#suggested-prompts)。
+
+## 常见问题
+
+- **找不到插件或 Skill** · 确认本地插件目录内有 `.cursor-plugin/plugin.json`，重载 Cursor 后新建 Agent 对话。
+  企业版可请管理员确认 **Allow Local Plugin Imports** 已开启。
+- **连接失败或账号不对** · 在 Cursor 中仅保留一个启用的可灵 MCP 条目，再重新连接插件的 `kling-ai` 服务。
+  从国际版切换时，先断开旧连接，再用国内站账号授权。
+- **任务还在运行或结果卡片未显示** · 如果已有任务编号，请让 Cursor 查询原任务。其他问题见[故障排查](skills/kling-ai/references/troubleshooting.md)。
+
+## 功能
+
+- 文生图、参考图编辑和连续组图。未指定模型时，如果当前账号支持且符合需求，优先使用可灵图片 4.0，再考虑账号可用的默认模型。
+- [可灵图片 4.0](https://kling.ai/quickstart/kling-image-4-user-guide)支持原生 8K 和连续组图模式，单次最多生成 10 张连贯图片。
+- 可灵 4.0 支持文生视频、首尾帧与中间关键帧，以及使用图片、视频、音频和主体的全能参考。支持 3–30 秒、720p，符合条件的账号可用 1080p。
+- 可灵 4.0 Flash 支持文生视频、单首帧图生视频，以及使用图片、视频和主体的全能参考。支持 3–20 秒、720p。
+- 两款视频模型的全能参考均支持智能分镜。同步生成声音和保留原视频音频最多启用一项。实际可用模型、参数、素材上限和计费信息以当前账号为准。
+- 支持素材上传、主体管理、动作库、灵感值查询和任务查询。生成前确认计费设置，每次确认对应一次提交，结果卡片可用时自动刷新。
+
+## 插件组件
+
+| 组件 | 路径 | 用途 |
 | --- | --- | --- |
-| Manifest | `.cursor-plugin/plugin.json` | Plugin identity and native component entrypoints |
-| MCP | `mcp.json` | China remote OAuth MCP |
-| Rule | `rules/kling-ai.mdc` | Routing, safety, and single-submission constraints |
-| Core Skill | `skills/kling-ai/` | `/kling-ai` entrypoint, OAuth, account, media, Elements, status, and shared contract |
-| Image Skill | `skills/kling-ai-generate-image/` | Image workflows, prompting, and quality gates |
-| Video Skill | `skills/kling-ai-generate-video/` | Video, motion control, duration, and shot planning |
+| 清单 | `.cursor-plugin/plugin.json` | 声明插件及组件入口 |
+| MCP | `mcp.json` | 国内站远程 OAuth MCP |
+| Rule | `rules/kling-ai.mdc` | 请求路由和单次提交规则 |
+| 核心 Skill | `skills/kling-ai/` | `/kling-ai` 入口、授权、账号、素材、主体和任务查询 |
+| 图片 Skill | `skills/kling-ai-generate-image/` | 图片生成、提示词和质量检查 |
+| 视频 Skill | `skills/kling-ai-generate-video/` | 视频、动作控制、时长和镜头规划 |
 
-## Generation contract
+## 生成流程
 
-1. Call `who_am_i` before generation and use the live service's canonical
-   models, arguments, enums, and inputs.
-2. Upload local media with the remote upload tool and reuse one UUIDv7
-   `taskTraceId` for the same objective.
-3. Show final billable settings, including live-required billing disclosures, and
-   obtain explicit confirmation unless those settings are already authorized.
-4. Check the current credit balance on the same connection immediately before
-   submission. If the balance is unavailable or insufficient, pause the task.
-5. Call a generation tool at most once per confirmed intent; never retry an
-   ambiguous submission automatically.
-6. When Cursor mounts the generation MCP App, let that App refresh internally
-   instead of creating duplicate model-side `query_tasks` cards.
-7. If no App mounts, query at the provider-permitted interval until terminal,
-   cancelled, or the turn cannot continue. Report completion only after terminal
-   success with the requested number and type of usable results. If fewer results
-   are available, report the actual count. An explicit status request queries once.
+1. 生成前调用 `who_am_i`，使用服务返回的模型、参数、枚举值和输入定义。
+2. 使用远程上传工具上传本地素材。同一目标复用一个 UUIDv7 `taskTraceId`。
+3. 展示最终生成设置和当前服务要求的计费信息。用户已经授权这些设置时可直接继续，否则先取得明确确认。
+4. 提交前在同一连接检查当前灵感值。余额不可用或不足时暂停。
+5. 每次确认最多调用一次生成工具。提交结果不明确时，禁止自动重试。
+6. Cursor 显示结果卡片时，由卡片自动刷新。卡片未显示时，按服务允许的间隔查询，直到任务结束、取消或对话无法继续。单次状态查询只查一次。
+7. 任务成功并返回所需类型、数量的可用结果后，才报告完成。结果不足时报告实际数量。
 
-If credits run out, sign in to the same account on your region's official Kling
-site and top up. Return to the same Cursor conversation and ask to continue the
-paused task. If the original submission has a task number, Cursor checks it first.
-If a new submission is safe, Cursor rechecks the balance and uses the original
-settings.
+灵感值不足时，请在国内站用同一账号补充，然后回到原 Cursor 对话继续。
+Cursor 会先检查已有任务编号，并且只在可以安全提交时复核余额、按原设置提交。
 
-## Suggested prompts
-
-Select the core Skill with `/kling-ai` in Cursor chat, then enter your request.
-
-Try the five suggested prompts in [English](skills/kling-ai/references/prompt-examples.md#suggested-prompts) or [中文](skills/kling-ai/references/prompt-examples.md#推荐提示词).
-
-## More examples
-
-> `/kling-ai` Check my authorization and credits without creating a generation task.
-
-> `/kling-ai` Create a 4:5 product poster. Show final settings and wait for confirmation.
-
-> `/kling-ai` Create a five-second 16:9 continuous shot with a slow camera push-in.
-
-> `/kling-ai` Query the current state of this task number once. Do not create a new task.
-
-## Validation
+## 开发验证
 
 ```bash
 npm run check
@@ -114,12 +120,12 @@ for skill in skills/*; do
 done
 ```
 
-## Official references
+## 官方资料
 
-- [Cursor Plugins](https://cursor.com/docs/plugins)
-- [Cursor Plugins Reference](https://cursor.com/docs/reference/plugins)
-- [Cursor MCP](https://cursor.com/docs/mcp)
+- [Cursor 插件文档](https://cursor.com/docs/plugins)
+- [Cursor 插件参考](https://cursor.com/docs/reference/plugins)
+- [Cursor MCP 文档](https://cursor.com/docs/mcp)
 
-## License
+## 许可证
 
-MIT. Kling AI and related marks belong to their respective owners.
+MIT。可灵 AI 及相关商标归各自权利人所有。
