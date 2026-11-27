@@ -6,6 +6,16 @@ Using a China account? See the [China plugin on the `cn` branch](https://github.
 
 ## Quick start
 
+### Connect the Global MCP directly
+
+[Add Kling AI Global MCP to Cursor](https://cursor.com/install-mcp?name=kling-ai-global&config=eyJ1cmwiOiJodHRwczovL2tsaW5nLmFpL21jcC9wbHVnaW4ifQ%3D%3D)
+
+Open the link on a device with Cursor desktop, review the server configuration,
+and choose **Install**. In **Customize**, click **Connect** and sign in to your
+Kling AI Global account. In Agent chat, ask to check the connection and available
+credits before generating. Follow the plugin steps below for bundled Rules and
+the `/kling-ai` Skill. Keep one Kling MCP connection enabled at a time.
+
 ### 1. Install the plugin
 
 Open Cursor desktop, switch the chat to **Agent**, and paste this request.
