@@ -6,6 +6,15 @@
 
 ## 快速开始
 
+### 直接连接可灵国内站 MCP
+
+[将可灵国内站 MCP 添加到 Cursor](https://cursor.com/install-mcp?name=kling-ai-china&config=eyJ1cmwiOiJodHRwczovL2tsaW5nYWkuY29tL21jcC9wbHVnaW4ifQ%3D%3D)
+
+在装有 Cursor 桌面端的设备上打开链接，核对服务器配置后选择 **Install**。
+在 **Customize** 中点击 **Connect**，用可灵国内站账号授权。
+在 Agent 对话中查询连接状态和可用灵感值，即可确认连接。
+如需配套 Rule 和 `/kling-ai` Skill，请按下方步骤安装完整插件。请同时只启用一个可灵 MCP 连接。
+
 ### 1. 安装插件
 
 打开 Cursor 桌面端，在 **Agent** 对话中粘贴这段话。
@@ -43,9 +52,6 @@ Copy-Item -Recurse -Force -Path .cursor-plugin, assets, rules, skills, mcp.json,
 
 如果已经克隆过仓库，更新本地 `cn` 分支，在仓库根目录执行复制步骤即可。
 如果旧版的本地插件目录里还有 `commands/kling-ai.md`，请在重载前移除该旧文件。
-
-[Cursor Directory 页面](https://cursor.directory/plugins/kling-ai)会分别添加 Rule 或 MCP。
-要安装包含 `/kling-ai` Skill 的完整插件，请使用上面的本地安装步骤。
 
 ### 2. 授权可灵账号
 
